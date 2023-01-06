@@ -9,6 +9,8 @@ app.listen(PORT, () => {
 
 const usersRouter = require('./routes/users.routes')
 
+app.use('/user', usersRouter)
+
 // respond with "hello world" when a GET request is made to the homepage
 app.get('/', function(req, res) {
   res.send('Home');
