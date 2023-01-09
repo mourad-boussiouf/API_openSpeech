@@ -31,8 +31,8 @@ const usersController = {
     register: async (req, res) => {
 
         try {
-            console.log(req.body)
-            const {mail, pseudo, password, firstname, lastname } = req.body
+           
+            const { mail, pseudo, password, firstname, lastname } = req.body
 
             if (!mail){
                 return res
@@ -66,6 +66,7 @@ const usersController = {
                         .json({message: "Le mot de passe doit contenir au moins 6 caractères."})
                         .end()
                 } else {
+
                     const verifUserExist = "SELECT firstname from users where mail = ?"
 
                     const [findUserExist] = await pool.query(verifUserExist, [mail])

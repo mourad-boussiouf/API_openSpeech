@@ -5,10 +5,8 @@ const router = express.Router()
 
 const userController = require("../controllers/users.controller")
 
-/**
- * Inscription utilisateur
- */
-router.post('/inscription', userController.register)
+
+router.post('/register', userController.register)
 
 
 router.get('/list', userController.getAll)
