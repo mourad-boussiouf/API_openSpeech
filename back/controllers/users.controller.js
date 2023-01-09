@@ -194,6 +194,32 @@ const usersController = {
         } catch (error) {
             console.log(error)
         }
+    }, 
+
+    getProfil: async (req, res, next) => {
+        try {
+            console.log(req.cookies)
+
+            const AuthUserId = req.cookies.id
+
+            const getMe = "SELECT * from users where id = ?"
+
+            const [query] = await pool.query(getMe, AuthUserId)
+
+            if (!query)
+                return res
+                    .status(400)
+                    .send({message: "Erreur de récupération de profil"})
+                    .end()
+            
+            return res
+                .status(200)
+                .send({data: query[0]})
+                .end
+
+        } catch (error) {
+            console.log(error)
+        }
     }
 }
 

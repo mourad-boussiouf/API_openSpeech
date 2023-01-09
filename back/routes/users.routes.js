@@ -12,6 +12,7 @@ router.post('/login', userController.login)
 
 router.get("/list", isAuth, userController.getAll)
 router.get("/details/:id", isAuth, userController.getDetails)
+router.get("/profil/:id", isAuth, userController.getProfil)
 
 module.exports = router
 
