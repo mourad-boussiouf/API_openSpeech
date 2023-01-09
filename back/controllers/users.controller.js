@@ -65,6 +65,10 @@ const usersController = {
                         .status(400)
                         .json({message: "Le mot de passe doit contenir au moins 6 caractères."})
                         .end()
+                } else if (pseudo.length < 5){
+                    return res
+                        .status(400)
+                        .json({message: "Votre pseudo doit contenir au moins 5 caractères"})
                 } else {
 
                     const verifUserExist = "SELECT firstname from users where mail = ?"
