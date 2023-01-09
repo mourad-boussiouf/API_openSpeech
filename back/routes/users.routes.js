@@ -10,9 +10,8 @@ const isAuth = require('../middlewares/isAuthMiddleware')
 router.post('/register', userController.register)
 router.post('/login', userController.login)
 
-router.get("/:id", isAuth, userController.getAll)
-
-router.get('/list', userController.getAll)
+router.get("/list", isAuth, userController.getAll)
+router.get("/details/:id", isAuth, userController.getDetails)
 
 module.exports = router
 

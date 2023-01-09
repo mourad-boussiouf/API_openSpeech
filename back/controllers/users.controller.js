@@ -21,7 +21,7 @@ const usersController = {
 
     getAll: async (req, res, next) => {
         try {
-            const [rows, fields] = await pool.query('SELECT firstname, lastname from users')
+            const [rows, fields] = await pool.query('SELECT firstname, lastname, mail from users')
             res.json({
                 data: rows
             })
@@ -170,6 +170,30 @@ const usersController = {
 
     logout: async (req, res) => {
         
+    },
+
+    getDetails: async (req, res, next) => {
+        try {
+            const id_user = req.params.id
+
+            const queryGetDetails = "SELECT * from users WHERE id = ? "
+
+            const [queryResult] = await pool.query(queryGetDetails, id_user)
+
+            if(!queryResult[0])
+                return res
+                    .status(400)
+                    .send({message: "Aucun utilisateur trouvé"})
+                    .end()
+
+            return res
+                .status(200)
+                .send({data: queryResult})
+                .end()
+
+        } catch (error) {
+            console.log(error)
+        }
     }
 }
 
