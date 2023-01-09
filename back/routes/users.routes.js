@@ -5,7 +5,12 @@ const router = express.Router()
 
 const userController = require("../controllers/users.controller")
 
-// router.post('/register', userController.register)
+/**
+ * Inscription utilisateur
+ */
+router.post('/inscription', userController.register)
+
+
 router.get('/list', userController.getAll)
 
 module.exports = router
