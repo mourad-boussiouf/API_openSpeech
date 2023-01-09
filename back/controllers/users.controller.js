@@ -15,7 +15,9 @@ const bcrypt = require("bcryptjs");
  */
 const usersController = {
 
-    getAll: async (req, res) => {
+    
+
+    getAll: async (req, res, next) => {
         try {
             const [rows, fields] = await pool.query('SELECT firstname, lastname from users')
             res.json({
@@ -28,7 +30,7 @@ const usersController = {
         }
     },
 
-    register: async (req, res) => {
+    register: async (req, res, next) => {
 
         try {
            
@@ -60,6 +62,7 @@ const usersController = {
                     .json({message: "Veuillez renseigner votre nom."})
                     .end()
             } else {
+
                 if (password.length < 6){
                     return res
                         .status(400)
@@ -71,14 +74,26 @@ const usersController = {
                         .json({message: "Votre pseudo doit contenir au moins 5 caractères"})
                 } else {
 
-                    const verifUserExist = "SELECT firstname from users where mail = ?"
+                    const verifEmailExist = "SELECT firstname from users where mail = ?"
 
-                    const [findUserExist] = await pool.query(verifUserExist, [mail])
+                    const [findEmailExist] = await pool.query(verifEmailExist, [mail])
 
-                    if (findUserExist.length > 0)
+                    if (findEmailExist.length > 0)
+                    
                         return res
                             .status(400)
-                            .json({message: "L'utilisateur est déjà inscrit."})
+                            .json({message: "L'adresse e-mail est déjà utilisée."})
+                            .end()
+                    
+                    const verifPseudoExist = "SELECT firstname from users where pseudo = ?"
+
+                    const [findVerifPseudo] = await pool.query(verifPseudoExist, [pseudo])
+
+                    if (findVerifPseudo.length > 0)
+                    
+                        return res
+                            .status(400)
+                            .json({message: "Le pseudo est déjà utilisé."})
                             .end()
                     
                     const sqlRegister = "INSERT INTO users (mail, pseudo, password, firstname, lastname, id_role) values ( ?, ?, ?, ?, ?, ?)"
@@ -86,19 +101,20 @@ const usersController = {
                     const hash = await bcrypt.genSalt()
                     const passwordHash = await bcrypt.hash(password, hash)
 
-                    const [query] = await pool.query(sqlRegister, [mail, pseudo, passwordHash, firstname, lastname, "1" ])
+                    const [query] = await pool.query(sqlRegister, [mail, pseudo, passwordHash, firstname, lastname, "1"])
 
-                    return res
-                        .status(200)
+                    res.status(200)
                         .json({message: "Inscription effectué avec succés, bienvenue."})
                         .end()
-
                 }
+                
             }
+            
         } catch (error) {
             console.log(error)
             res.json({status: "Register : erreur durant la connexion"})
         }
+        
     }
 }
 
