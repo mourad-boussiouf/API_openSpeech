@@ -5,8 +5,12 @@ const router = express.Router()
 
 const userController = require("../controllers/users.controller")
 
-router.post('/register', userController.register)
+const isAuth = require('../middlewares/isAuthMiddleware')
 
+router.post('/register', userController.register)
+router.post('/login', userController.login)
+
+router.get("/:id", isAuth, userController.getAll)
 
 router.get('/list', userController.getAll)
 

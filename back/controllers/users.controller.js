@@ -7,6 +7,8 @@ const pool = require('../services/database')
 /**Import cryptage mot de passe */
 const bcrypt = require("bcryptjs");
 
+const jwt = require("jsonwebtoken");
+
 
 /**
  * const usersController: Requêtes sql
@@ -114,6 +116,59 @@ const usersController = {
             console.log(error)
             res.json({status: "Register : erreur durant la connexion"})
         }
+        
+    },
+
+    login: async (req, res, next) => {
+        try {
+            const {mail, password} = req.body
+
+            if (!mail || !password){
+                return res
+                    .status(400)
+                    .json({message: "Veuillez renseigner les champs requis."})
+                    .end()
+            }
+
+            const verifAuthUser = "SELECT * from users where mail = ?"
+
+            const [findUser] = await pool.query(verifAuthUser, [mail])
+
+            if (findUser.length > 0){
+                const correctPassword = await bcrypt.compare(
+                    password,
+                    findUser[0].password
+                )
+
+                if (!correctPassword){
+                    return res
+                        .status(401)
+                        .json({message: "E-mail ou mot de passe incorrect"})
+                } else {
+                    const token = jwt.sign({
+                        username: findUser[0].firstname,
+                        userId: findUser[0].id
+                    },
+                    'SECRETKEY', {
+                        expiresIn: '7d'
+                    });
+
+                    //send the token in an HTTP only cookie
+                    res.cookie("token", token, {httpOnly: true});
+                    res.cookie("id", findUser[0].id, {httpOnly: true});
+
+                    res.status(200).send({message: "Connexion réussie", token: token, user: findUser[0]})
+                }
+            } else {
+                return res.status(400).json({message: "Email ou mot de passe incorrect"})
+            }
+
+        } catch (error) {
+            console.log(error)
+        }
+    }, 
+
+    logout: async (req, res) => {
         
     }
 }

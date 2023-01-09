@@ -3,11 +3,17 @@ var app = express();
 
 var cors = require('cors')
 
+const cookieParser = require('cookie-parser');
+
+
+
 /* Listening port */
 const PORT = process.env.PORT || 3000
 app.listen(PORT, () => {
     console.log(`L'appli marche sur le port ${PORT}`)
 })
+
+app.use(cookieParser())
 
 app.use(cors())
 
