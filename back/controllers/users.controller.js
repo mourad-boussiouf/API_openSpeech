@@ -21,13 +21,6 @@ const usersController = {
 
     getAll: async (req, res, next) => {
         try {
-<<<<<<< HEAD
-            
-             const rows = await pool.query('SELECT firstname, lastname from users')
-             res.json({
-                 data: rows
-             })
-=======
 
             const reqToken = req.headers.authorization.split(' ')[1]
 
@@ -44,7 +37,6 @@ const usersController = {
                 data: rows
             })
             pool.end()
->>>>>>> 516fa5c17657d1872efd79cd986e6ec1b69796d2
         } catch (error) {
             console.log(error)
             res.json({status: "error"})
