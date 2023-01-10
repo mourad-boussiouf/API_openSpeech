@@ -21,6 +21,17 @@ const usersController = {
 
     getAll: async (req, res, next) => {
         try {
+
+            const reqToken = req.headers.authorization.split(' ')[1]
+
+            const currentToken = req.cookies.token
+
+            if (reqToken !== currentToken)
+                return res
+                    .status(400)
+                    .send({message: "Token invalide"})
+                    .end()
+            
             const [rows, fields] = await pool.query('SELECT firstname, lastname, mail from users')
             res.json({
                 data: rows
@@ -174,6 +185,17 @@ const usersController = {
 
     getDetails: async (req, res, next) => {
         try {
+
+            const reqToken = req.headers.authorization.split(' ')[1]
+
+            const currentToken = req.cookies.token
+
+            if (reqToken !== currentToken)
+                return res
+                    .status(400)
+                    .send({message: "Token invalide"})
+                    .end()
+            
             const id_user = req.params.id
 
             const queryGetDetails = "SELECT * from users WHERE id = ? "
@@ -198,8 +220,17 @@ const usersController = {
 
     getProfil: async (req, res, next) => {
         try {
-            console.log(req.cookies)
 
+            const reqToken = req.headers.authorization.split(' ')[1]
+
+            const currentToken = req.cookies.token
+
+            if (reqToken !== currentToken)
+                return res
+                    .status(400)
+                    .send({message: "Token invalide"})
+                    .end()
+            
             const AuthUserId = req.cookies.id
 
             const getMe = "SELECT * from users where id = ?"
