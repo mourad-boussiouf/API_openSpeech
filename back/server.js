@@ -22,8 +22,10 @@ app.use(express.json())
 
 
 const usersRouter = require('./routes/users.routes')
+const chatsRouter = require('./routes/chats.routes')
 
 app.use('/user', usersRouter)
+app.use('/chat', chatsRouter)
 
 // respond with "hello world" when a GET request is made to the homepage
 app.get('/', function(req, res) {
