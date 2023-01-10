@@ -1,15 +1,16 @@
-const express = require("express")
-const app = express()
+const express = require("express");
+const app = express();
 
-const router = express.Router()
+const router = express.Router();
 
 const userController = require("../controllers/users.controller")
 
 const isAuth = require('../middlewares/isAuthMiddleware')
 
-router.post('/register', userController.register)
+router.post('/register', userController.register);
 router.post('/login', userController.login)
 
+router.get('/search/:keyword', userController.searchUsersLikeKeyword);
 router.get("/list", isAuth, userController.getAll)
 router.get("/details/:id", isAuth, userController.getDetails)
 router.get("/profil/:id", isAuth, userController.getProfil)
