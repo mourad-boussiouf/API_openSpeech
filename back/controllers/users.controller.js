@@ -15,8 +15,20 @@ const bcrypt = require("bcryptjs");
  */
 const usersController = {
 
+    searchUsersLikeKeyword: async (req, res, next) => {
+        try {
+            const keyword = req.params.keyword;
+            const [rows, fields] = await pool.query(`SELECT * FROM users WHERE pseudo LIKE '%${keyword}%'`)
+            res.json({
+                data: rows
+            })
+            pool.end()
+        } catch (error) {
+            console.log(error)
+            res.json({status: "Aucunes occurences trouvée en BDD avec le/les mot(s)-clef(s)."})
+        }
+    }, 
     
-
 
     getAll: async (req, res, next) => {
         try {
