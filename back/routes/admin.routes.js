@@ -9,4 +9,6 @@ const isAuthAdmin = require('../middlewares/isAuthAdminMiddleware')
 
 router.delete('/message/:id', isAuthAdmin, adminController.deleteMessage)
 
+router.patch("/user/:id", isAuthAdmin, adminController.updateUser)
+
 module.exports = router
