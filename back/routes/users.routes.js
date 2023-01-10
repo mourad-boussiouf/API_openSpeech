@@ -11,9 +11,12 @@ router.post('/register', userController.register);
 router.post('/login', userController.login)
 
 router.get('/search/:keyword', userController.searchUsersLikeKeyword);
+
 router.get("/list", isAuth, userController.getAll)
 router.get("/details/:id", isAuth, userController.getDetails)
 router.get("/profil/:id", isAuth, userController.getProfil)
+router.put("/profil/update",isAuth, userController.updateMyProfile);
+
 
 module.exports = router
 
