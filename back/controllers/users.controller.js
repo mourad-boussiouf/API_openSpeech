@@ -17,28 +17,27 @@ const jwt = require("jsonwebtoken");
  */
 const usersController = {
 
-    searchUsersLikeKeyword: async (req, res, next) => {
-        try {
-            const keyword = req.params.keyword;
-            const [rows, fields] = await pool.query(`SELECT * FROM users WHERE pseudo LIKE '%${keyword}%'`)
-            res.json({
-                data: rows
-            })
-            pool.end()
-        } catch (error) {
-            console.log(error)
-            res.json({status: "Aucunes occurences trouvée en BDD avec le/les mot(s)-clef(s)."})
-        }
-    }, 
     
 
     getAll: async (req, res, next) => {
         try {
-            const [rows, fields] = await pool.query('SELECT firstname, lastname from users')
+
+            const reqToken = req.headers.authorization.split(' ')[1]
+
+            const currentToken = req.cookies.token
+
+            if (reqToken !== currentToken)
+                return res
+                    .status(400)
+                    .send({message: "Token invalide"})
+                    .end()
+            
+            const [rows, fields] = await pool.query('SELECT firstname, lastname, mail from users')
             res.json({
                 data: rows
             })
             pool.end()
+            
         } catch (error) {
             console.log(error)
             res.json({status: "error"})
@@ -183,7 +182,84 @@ const usersController = {
 
     logout: async (req, res) => {
         
+    },
+
+    getDetails: async (req, res, next) => {
+        try {
+
+            const reqToken = req.headers.authorization.split(' ')[1]
+
+            const currentToken = req.cookies.token
+
+            if (reqToken !== currentToken)
+                return res
+                    .status(400)
+                    .send({message: "Token invalide"})
+                    .end()
+            
+            const id_user = req.params.id
+
+            const queryGetDetails = "SELECT * from users WHERE id = ? "
+
+            const [queryResult] = await pool.query(queryGetDetails, id_user)
+
+            if(!queryResult[0])
+                return res
+                    .status(400)
+                    .send({message: "Aucun utilisateur trouvé"})
+                    .end()
+
+            return res
+                .status(200)
+                .send({data: queryResult})
+                .end()
+
+        } catch (error) {
+            console.log(error)
+        }
+    }, 
+
+    getProfil: async (req, res, next) => {
+        try {
+
+            const reqToken = req.headers.authorization.split(' ')[1]
+
+            const currentToken = req.cookies.token
+
+            if (reqToken !== currentToken)
+                return res
+                    .status(400)
+                    .send({message: "Token invalide"})
+                    .end()
+            
+            const AuthUserId = req.cookies.id
+
+            const getMe = "SELECT * from users where id = ?"
+
+            const [query] = await pool.query(getMe, AuthUserId)
+
+            if (!query)
+                return res
+                    .status(400)
+                    .send({message: "Erreur de récupération de profil"})
+                    .end()
+            
+            return res
+                .status(200)
+                .send({data: query[0]})
+                .end
+
+        } catch (error) {
+            console.log(error)
+        }
     }
+
+
+
+
 }
+
+
+
 
 module.exports = usersController

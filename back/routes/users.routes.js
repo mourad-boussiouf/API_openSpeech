@@ -8,14 +8,13 @@ const userController = require("../controllers/users.controller")
 const isAuth = require('../middlewares/isAuthMiddleware')
 
 router.post('/register', userController.register);
-
 router.post('/login', userController.login)
 
-router.get("/:id", isAuth, userController.getAll)
-//route recherche par mot clef
-router.get('/search/:keyword', userController.searchUsersLikeKeyword);
 
-router.get('/list', userController.getAll);
+router.get('/search/:keyword', userController.searchUsersLikeKeyword);
+router.get("/list", isAuth, userController.getAll)
+router.get("/details/:id", isAuth, userController.getDetails)
+router.get("/profil/:id", isAuth, userController.getProfil)
 
 module.exports = router
 
