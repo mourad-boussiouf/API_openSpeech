@@ -264,11 +264,24 @@ const usersController = {
         } catch (error) {
             console.log(error)
         }
-    }
+    },
 
-
-
-
+    updateMyProfile: async (req, res, next) => {
+        try {
+            const {mail, password} = req.body
+            const actualUserId = req.cookies.id;
+            const actualUserMail = req.user.mail;
+            const [rows, fields] = await pool.query(`UPDATE users SET mail = '${req.body.mail}' , pseudo = '${req.body.pseudo}',
+            firstname = '${req.body.firstname}', lastname = '${req.body.lastname}' WHERE id = ${actualUserId}`)
+            return res
+                .status(200, "profile bien update")
+                .json({data: rows})
+                .end()
+        } catch (error) {
+            console.log(error)
+            res.json({status: "Aucunes occurences trouvée en BDD avec le/les mot(s)-clef(s)."})
+        }
+    }, 
 }
 
 
