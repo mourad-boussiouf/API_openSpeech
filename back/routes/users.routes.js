@@ -8,6 +8,7 @@ const userController = require("../controllers/users.controller")
 const isAuth = require('../middlewares/isAuthMiddleware')
 
 router.post('/register', userController.register)
+
 router.post('/login', userController.login)
 
 router.get("/:id", isAuth, userController.getAll)
