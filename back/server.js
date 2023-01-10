@@ -4,7 +4,7 @@ var app = express();
 var cors = require('cors')
 
 const cookieParser = require('cookie-parser');
-
+app.use(cookieParser())
 
 
 /* Listening port */
@@ -13,11 +13,12 @@ app.listen(PORT, () => {
     console.log(`L'appli marche sur le port ${PORT}`)
 })
 
-app.use(cookieParser())
+
 
 app.use(cors())
 
 app.use(express.urlencoded({extended: true}))
+
 app.use(express.json())
 
 const usersRouter = require('./routes/users.routes')

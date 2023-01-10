@@ -10,7 +10,6 @@ const isAuth = require('../middlewares/isAuthMiddleware')
 router.post('/register', userController.register);
 router.post('/login', userController.login)
 
-
 router.get('/search/:keyword', userController.searchUsersLikeKeyword);
 router.get("/list", isAuth, userController.getAll)
 router.get("/details/:id", isAuth, userController.getDetails)
