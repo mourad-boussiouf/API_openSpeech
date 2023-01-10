@@ -24,7 +24,6 @@ const usersController = {
             res.json({
                 data: rows
             })
-            pool.end()
         } catch (error) {
             console.log(error)
             res.json({status: "Aucunes occurences trouvée en BDD avec le/les mot(s)-clef(s)."})
