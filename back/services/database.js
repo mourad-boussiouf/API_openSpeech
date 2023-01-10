@@ -1,6 +1,8 @@
 /* create database connection */
 const mysql = require('mysql2');
 
+
+
 const pool = mysql.createPool({
     port: 8888,
     host: process.env.DB_HOST || 'localhost',

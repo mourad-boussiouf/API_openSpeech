@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Hôte : 127.0.0.1
--- Généré le : ven. 06 jan. 2023 à 15:57
+-- Généré le : mar. 10 jan. 2023 à 15:40
 -- Version du serveur : 10.4.24-MariaDB
 -- Version de PHP : 8.1.6
 
@@ -44,7 +44,8 @@ CREATE TABLE `messages` (
   `message` varchar(1000) NOT NULL,
   `created_at` datetime NOT NULL,
   `id_user` int(11) NOT NULL,
-  `id_chat` int(11) NOT NULL
+  `id_chat` int(11) NOT NULL,
+  `isGeneral` tinyint(1) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
@@ -58,6 +59,14 @@ CREATE TABLE `roles` (
   `nom` varchar(100) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
+--
+-- Déchargement des données de la table `roles`
+--
+
+INSERT INTO `roles` (`id`, `nom`) VALUES
+(1, 'utilisateur'),
+(2, 'admin');
+
 -- --------------------------------------------------------
 
 --
@@ -67,20 +76,22 @@ CREATE TABLE `roles` (
 CREATE TABLE `users` (
   `id` int(11) NOT NULL,
   `mail` varchar(255) NOT NULL,
-  `pseudo` varchar(100) NOT NULL,
+  `pseudo` varchar(100) DEFAULT NULL,
   `password` varchar(100) NOT NULL,
   `firstname` varchar(100) NOT NULL,
   `lastname` varchar(100) NOT NULL,
   `created_at` datetime NOT NULL DEFAULT current_timestamp(),
-  `id_role` int(11) NOT NULL
+  `id_role` int(11) NOT NULL DEFAULT 1,
+  `urlAvatar` varchar(155) NOT NULL
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 --
 -- Déchargement des données de la table `users`
 --
 
-INSERT INTO `users` (`id`, `mail`, `pseudo`, `password`, `firstname`, `lastname`, `created_at`, `id_role`) VALUES
-(1, 'test@gmail.com', 'testing1', 'testtest', 'test', 'test', '2023-01-06 15:43:58', 1);
+INSERT INTO `users` (`id`, `mail`, `pseudo`, `password`, `firstname`, `lastname`, `created_at`, `id_role`, `urlAvatar`) VALUES
+(1, 'test@gmail.com', 'testing1', 'testtest', 'test', 'test', '2023-01-06 15:43:58', 1, ''),
+(16, 'lucas@hotmail.fr', 'maxou31', '$2a$10$QlcYkFmCutlmBRo6DWVy/uO.D33dX9n6fvCFQkf9QH/aZ0i0CByz.', 'max', 'maxo', '2023-01-09 20:58:12', 1, '');
 
 -- --------------------------------------------------------
 
@@ -148,13 +159,13 @@ ALTER TABLE `messages`
 -- AUTO_INCREMENT pour la table `roles`
 --
 ALTER TABLE `roles`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT pour la table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT pour la table `users_chats`
