@@ -48,7 +48,6 @@ const usersController = {
                 data: rows
             })
             pool.end()
-
         } catch (error) {
             console.log(error)
             res.json({status: "error"})
@@ -195,7 +194,7 @@ const usersController = {
         
     },
 
-    getDetails: async (req, res, next) => {
+    getDetails: async (req, res) => {
         try {
 
             const reqToken = req.headers.authorization.split(' ')[1]
@@ -222,7 +221,7 @@ const usersController = {
 
             return res
                 .status(200)
-                .send({data: queryResult})
+                .send({data: queryResult[0]})
                 .end()
 
         } catch (error) {
