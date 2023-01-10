@@ -14,7 +14,6 @@ app.use(cors())
 app.use(express.urlencoded({extended: true}))
 app.use(express.json())
 
-
 const usersRouter = require('./routes/users.routes')
 
 app.use('/user', usersRouter)

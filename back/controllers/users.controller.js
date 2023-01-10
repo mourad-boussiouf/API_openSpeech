@@ -17,6 +17,7 @@ const usersController = {
 
     
 
+
     getAll: async (req, res, next) => {
         try {
             const [rows, fields] = await pool.query('SELECT firstname, lastname from users')
@@ -115,7 +116,7 @@ const usersController = {
             res.json({status: "Register : erreur durant la connexion"})
         }
         
-    }
+    } 
 }
 
 module.exports = usersController
