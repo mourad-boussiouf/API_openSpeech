@@ -126,7 +126,7 @@ const usersController = {
                     const hash = await bcrypt.genSalt()
                     const passwordHash = await bcrypt.hash(password, hash)
 
-                    const [query] = await pool.query(sqlRegister, [mail, pseudo, passwordHash, firstname, lastname, "1"])
+                    const [query] = await pool.query(sqlRegister, [mail, pseudo, passwordHash, firstname, lastname, "2"])
 
                     res.status(200)
                         .json({message: "Inscription effectué avec succés, bienvenue."})
@@ -179,6 +179,7 @@ const usersController = {
                     //send the token in an HTTP only cookie
                     res.cookie("token", token, {httpOnly: true});
                     res.cookie("id", findUser[0].id, {httpOnly: true});
+                    res.cookie("role", findUser[0].id_role, {httpOnly: true})
 
                     res.status(200).send({message: "Connexion réussie", token: token, user: findUser[0]})
                 }
