@@ -75,11 +75,19 @@ const adminController = {
 
     deleteUser: async (req, res, next) => {
         try {
+
             var id_user = req.params.id
 
-            var sql = "SELECT * from users WHERE id = ? "
+            var sql = "DELETE FROM users WHERE id = ? "
 
-            
+            var [sqlDeleteUser] = await pool.query(sql, id_user)
+
+            console.log(sqlDeleteUser)
+
+            return res
+                .status(200)
+                .json({message: "utilisateur supprimé avec succés"})
+                .end()
 
         } catch (error) {
             console.log(error)
