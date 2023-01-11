@@ -4,6 +4,9 @@ const app = express()
 /**Import Base de données */
 const pool = require('../services/database')
 
+/**Import cryptage mot de passe */
+const bcrypt = require("bcryptjs");
+
 const adminController = {
 
     deleteMessage: async (req, res, next) => {
@@ -36,8 +39,24 @@ const adminController = {
             var newArray = []
 
             for (const [key, value] of Object.entries(array)) {
-                newArray.push(` ${key} = '${value}' `)
+
+                if (key === "password"){
+                    if (key.length < 5){
+                        return res 
+                            .status(400)
+                            .json({message: "Le mot de passe doit contenir au moins 5 caractères."})
+                    } else {
+                        const salt = await bcrypt.genSalt()
+                        const passwordHash = await bcrypt.hash(req.body.password, salt)
+
+                        newArray.push(` ${key} = '${passwordHash}' `)
+                    }
+                } else {
+                    newArray.push(` ${key} = '${value}' `)
+                }
             }
+
+            console.log(newArray)
 
             if (newArray.length === 0)
                 return
