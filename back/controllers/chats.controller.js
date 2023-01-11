@@ -6,21 +6,58 @@ const pool = require('../services/database')
 
 const chatController = {
 
-    individualChat: async (req, res, next) => {
-        try {
+    test: async (req, res, next) => {
 
-            const idChat = req.params.id
+        const getChat = await pool.query('SELECT * FROM chats')
 
-            const getChat = "SELECT c.id as chatId, c.nom as chatNom, m.message as message, m.created_at as messageDate, m.id_user as userId, u.pseudo from chats AS c INNER JOIN messages AS m ON c.id = m.id_chat INNER JOIN users AS u ON m.id_user = u.id WHERE c.id = ? "
+        return res
+            .status(200)
+            .json({message: getChat})
+            .end()
+    }, 
 
-            const [resGetChat] = await pool.query(getChat, idChat)
+    testing: async (req, res, next) => {
 
+        const id_userTo = req.params.id
+
+        var verifExistUser = 'SELECT * FROM users where id = ?'
+
+        var [sqlVerifExistUser] = await pool.query(verifExistUser, id_userTo)
+
+        if (sqlVerifExistUser.length <= 0)
             return res
-                .send({data: resGetChat})
+                .status(400)
+                .json({message: "Utilisateur inexistant"})
+                .end()
 
-        } catch (error) {
-            console.log(error)
-        }
+        var getChatTo = 'SELECT * FROM users_chats WHERE id_user = ?'
+
+        var [sqlGetChatTo] = await pool.query(getChatTo, id_userTo)
+
+
+        const id_userFrom = req.cookies.id
+
+        var getChatFrom = 'SELECT * FROM users_chats WHERE id_user = ?'
+
+        var [sqlGetChatFrom] = await pool.query(getChatFrom, id_userFrom)
+
+        sqlGetChatFrom.map((item, index) => {
+
+            let test = sqlGetChatTo.some(chat => chat.id_chat == item.id_chat);
+
+            if (test){
+
+                console.log("Chat existant")
+
+            } else {
+
+                console.log("Création d'un chat")
+                
+            }
+        })
+
+
+        next()
     }
 }
 
