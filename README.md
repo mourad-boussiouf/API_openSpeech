@@ -8,7 +8,7 @@ Back : cd back -> npx nodemon server.js ou npm run dev
 
 2ème étape :
 Lancer le front-end 
-Front : cd front -> npm run start
+Front : cd front -> npm start
 
 
 /* Merging rules : */
