@@ -270,15 +270,42 @@ const usersController = {
             const {mail, password} = req.body
             const actualUserId = req.cookies.id;
             const actualUserMail = req.user.mail;
-            const [rows, fields] = await pool.query(`UPDATE users SET mail = '${req.body.mail}' , pseudo = '${req.body.pseudo}',
-            firstname = '${req.body.firstname}', lastname = '${req.body.lastname}' WHERE id = ${actualUserId}`)
+            
+            var array = req.body
+            var newArray = []
+
+            for (const [key, value] of Object.entries(array)) {
+
+                if (key === "password"){
+                    if (key.length < 5){
+                        return res 
+                            .status(400)
+                            .json({message: "Le mot de passe doit contenir au moins 5 caractères."})
+                    } else {
+                        const salt = await bcrypt.genSalt()
+                        const passwordHash = await bcrypt.hash(req.body.password, salt)
+
+                        newArray.push(` ${key} = '${passwordHash}' `)
+                    }
+                } else {
+                    newArray.push(` ${key} = '${value}' `)
+                }
+            }
+            
+            if (newArray.length === 0)
+                return
+
+            const sql = `UPDATE users SET ${newArray} WHERE id = '${actualUserId}'`
+
+            const sqlUpdateUser = await pool.query(sql)
+
             return res
-                .status(200, "profile bien update")
-                .json({data: rows})
+                .status(200)
+                .json({message: "Utilisateur mis à jour"})
                 .end()
         } catch (error) {
             console.log(error)
-            res.json({status: "Aucunes occurences trouvée en BDD avec le/les mot(s)-clef(s)."})
+            res.json({status: "Erreur"})
         }
     }, 
 }
