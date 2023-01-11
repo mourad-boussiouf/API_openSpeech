@@ -56,8 +56,6 @@ const adminController = {
                 }
             }
 
-            console.log(newArray)
-
             if (newArray.length === 0)
                 return
 
