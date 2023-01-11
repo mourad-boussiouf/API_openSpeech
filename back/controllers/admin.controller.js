@@ -71,6 +71,19 @@ const adminController = {
         } catch (error) {
             console.log(error)
         }
+    },
+
+    deleteUser: async (req, res, next) => {
+        try {
+            var id_user = req.params.id
+
+            var sql = "SELECT * from users WHERE id = ? "
+
+            
+
+        } catch (error) {
+            console.log(error)
+        }
     }
 }
 
