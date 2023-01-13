@@ -3,7 +3,6 @@ import { StyleSheet, SafeAreaView } from 'react-native';
 
 import {NavigationContainer} from '@react-navigation/native';
 
-
 import ImageViewer from './components/base/ImageViewer';
 const PlaceholderImage = require('./assets/1.png');
 
@@ -32,7 +31,6 @@ export default function App() {
                     </SafeAreaView>   
             }
             
-
         </NavigationContainer>
     );
 }
