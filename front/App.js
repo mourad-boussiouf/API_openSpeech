@@ -26,7 +26,9 @@ export default function App() {
             {
                 splashScreen === true ?
 
-                <Stack.Navigator>
+                <Stack.Navigator screenOptions={{
+                    headerShown: false
+                }}>
                     <Stack.Screen name="HomeScreen" component={HomeScreen} />
                     <Stack.Screen name="introStepByStep1" component={introStepByStep1} />
                 </Stack.Navigator>
