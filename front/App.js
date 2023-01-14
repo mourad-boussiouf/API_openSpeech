@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, SafeAreaView } from 'react-native';
-
 import {NavigationContainer} from '@react-navigation/native';
-
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import ImageViewer from './components/base/ImageViewer';
-const PlaceholderImage = require('./assets/1.png');
-
 import HomeScreen from './screen/HomeScreen';
+import introStepByStep1 from './screen/introStepByStep1';
+
+const Stack = createNativeStackNavigator();
+const PlaceholderImage = require('./assets/1.png');
 
 export default function App() {
 
@@ -15,7 +16,7 @@ export default function App() {
     useEffect(() => {
         setTimeout(() => {
             setSplashScreen(true)
-        }, 1000);
+        }, 500);
     }, [])
 
     return (
@@ -24,12 +25,17 @@ export default function App() {
 
             {
                 splashScreen === true ?
-                    <HomeScreen/>
+
+                <Stack.Navigator>
+                    <Stack.Screen name="HomeScreen" component={HomeScreen} />
+                    <Stack.Screen name="introStepByStep1" component={introStepByStep1} />
+                </Stack.Navigator>
                 :
-                    <SafeAreaView style={styles.container}>
-                        <ImageViewer PlaceholderImageSource={PlaceholderImage} style={styles.image}/>
-                    </SafeAreaView>   
+                <SafeAreaView style={styles.container}>
+                    <ImageViewer PlaceholderImageSource={PlaceholderImage} style={styles.image}/>
+                </SafeAreaView>   
             }
+
             
         </NavigationContainer>
     );
@@ -46,5 +52,5 @@ const styles = StyleSheet.create({
         backgroundColor: '#fff',
         alignItems: 'center',
         justifyContent: 'center',
-    },
+    }
 });
