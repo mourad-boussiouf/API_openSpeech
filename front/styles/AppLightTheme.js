@@ -11,7 +11,8 @@ const AppLightTheme = {
     primary: '#333333',
     background: '#ffffff',
     secondary: "#FFA69E",
-    error: "#B00020"
+    error: "#B00020",
+    success: "#00C851"
   }
 }
 

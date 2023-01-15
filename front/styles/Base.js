@@ -23,8 +23,7 @@ export const padding = {
     s: 8,
     m: 16,
     l: 32,
-    xl: 40,
-    topTitre: 96,
+    xl: 64,
 }
 
 export const margin = {
@@ -33,5 +32,5 @@ export const margin = {
     m: 16,
     l: 32,
     xl: 40,
-    topTitre: 96,
+    topTitre: 72,
 }

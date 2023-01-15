@@ -16,6 +16,13 @@ import HomeScreen from './screen/HomeScreen';
 
 import AppLightTheme from './styles/AppLightTheme';
 import AppDarkTheme from './styles/AppDarkTheme';
+import InscriptionScreen from './screen/InscriptionScreen';
+import ListMessages from './screen/ListMessages';
+
+
+// import { LogBox } from 'react-native';
+// LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
+// LogBox.ignoreAllLogs();
 
 export default function App() {
 
@@ -39,7 +46,11 @@ export default function App() {
                 splashScreen === true ?
                     <>
                         <StatusBar barStyle={"light-content"}/>
-                        <HomeScreen />
+                        <Stack.Navigator screenOptions={{headerShown: false}}>
+                            <Stack.Screen name="Home" component={HomeScreen} />
+                            <Stack.Screen name="Inscription" component={InscriptionScreen}/>
+                            <Stack.Screen name="ListMessages" component={ListMessages}/>
+                        </Stack.Navigator>
                     </>
                     
                 :
@@ -47,6 +58,7 @@ export default function App() {
                         <ImageViewer PlaceholderImageSource={PlaceholderImage} style={styles.image}/>
                     </SafeAreaView>   
             }
+            
             
 
         </NavigationContainer>

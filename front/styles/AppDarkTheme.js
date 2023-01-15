@@ -11,7 +11,8 @@ const AppDarkTheme = {
     primary: '#f9f9f9',
     background: '#252525',
     secondary: "#CCE6F4",
-    error: "#B00020"
+    error: "#B00020",
+    success: "#00C851"
   }
 }
 

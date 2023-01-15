@@ -10,7 +10,7 @@ Lancer le back-end = cd back -> npx nodemon server.js ou npm run dev
 
 2ème étape :
 ***
-Lancer le front-end = cd front -> npm start
+Lancer le front-end = cd front -> npx expo start
 
 ***
 # Merging rules : 

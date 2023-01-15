@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
-import { Button, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { SafeAreaView, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import { useTheme } from '@react-navigation/native';
 import TitreViewer from '../base/TitreViewer';
+
 
 import Checkbox from 'expo-checkbox';
 
@@ -9,7 +10,14 @@ import Checkbox from 'expo-checkbox';
 import { dimensions, margin, padding } from '../../styles/Base';
 import ButtonSubmit from '../base/ButtonSubmit';
 
+import { API_USERS } from '../../services/config';
+import ValideWarning from '../warning/ValideWarning';
+
+import { useNavigation } from '@react-navigation/native';
+
 const ConnexionFormulaire = () => {
+
+    const navigation = useNavigation();
 
     const { colors } = useTheme();
 
@@ -17,6 +25,7 @@ const ConnexionFormulaire = () => {
     const [password, onChangePassword] = useState()
     const [isChecked, setChecked] = useState(false);
     const [error, setError] = useState({isError: false, message: ""})
+    const [valide, setValide] = useState({isValide: false, message: ""})
 
     const calculWidth = (pourcent) => {
         return dimensions.fullWidth - dimensions.fullWidth * pourcent
@@ -61,11 +70,11 @@ const ConnexionFormulaire = () => {
             color: colors.error,
             textAlign: "center",
 
-        }
+        },
+
     }
 
-    const onPress = () => {
-        console.log(password)
+    const onPress = async () => {
 
         let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/;
 
@@ -78,9 +87,38 @@ const ConnexionFormulaire = () => {
         if(!password)   
             return setError({isError: true, message: "Veuillez insérer un mot de passe"})
 
-        const data = {mail: email, password: password}
-        console.log("requête avec :" , data)
         setError({isError: false})
+
+        try {
+
+            var data = JSON.stringify({
+                mail: email, 
+                password: password
+            });
+
+            await fetch(API_USERS + '/login', {
+                method: "POST",
+                headers: { 'Content-Type': 'application/json' },
+                body: (data)
+            }).then(response => {
+                    response.json()
+                        .then(data => {
+
+                            if (response.status !== 200)
+                                return setError({isError: true, message: data.message})
+
+                            setValide({isValide: true, message: data.message})
+
+                            setTimeout(() => {
+                                navigation.navigate('ListMessages')
+                            }, 1000);
+                    });
+                
+            })
+        } catch (error) {
+            console.log(error)
+        }
+        
     }
 
     return (
@@ -89,10 +127,16 @@ const ConnexionFormulaire = () => {
             {
                 error.isError === true ?
                     <View
-                        style={{position: "absolute", top: margin.xs, alignSelf: "center"}}
+                        style={{position: "absolute", top: margin.s, alignSelf: "center"}}
                     >
                         <Text style={styles.error}>{error.message}</Text>
                     </View>
+                :
+                    <></>
+            }
+            {
+                valide.isValide === true ?
+                    <ValideWarning message={valide.message}/>
                 :
                     <></>
             }
@@ -151,11 +195,13 @@ const ConnexionFormulaire = () => {
                 >
                     Pas encore inscrit ? 
                 </Text>
-                <Text
-                    style={{color: colors.background, fontWeight: "bold", marginLeft: margin.xs}}
-                >
-                    Inscrivez-vous
-                </Text>
+                <TouchableOpacity onPress={() => navigation.navigate('Inscription')}>
+                    <Text
+                        style={{color: colors.background, fontWeight: "bold", marginLeft: margin.xs}}
+                    >
+                        Inscrivez-vous
+                    </Text>
+                </TouchableOpacity>
             </View>
             
         </SafeAreaView>
