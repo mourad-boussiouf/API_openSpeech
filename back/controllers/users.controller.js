@@ -15,7 +15,24 @@ const jwt = require("jsonwebtoken");
  * 
  */
 const usersController = {
+    test: async(req, res, next) => {
+        try {
+            const {pseudo} = req.body
 
+            const filename = req.file.filename
+
+            const sql = `UPDATE users SET urlAvatar = '${filename}' WHERE pseudo = '${pseudo}'`
+
+            const sqlUpdateUser = await pool.query(sql)
+
+            return res
+                .status(200)
+                .end()
+
+        } catch (error) {
+            console.log(error)
+        }
+    },
     searchUsersLikeKeyword: async (req, res, next) => {
         try {
             const keyword = req.params.keyword;
@@ -55,7 +72,6 @@ const usersController = {
     },
 
     register: async (req, res, next) => {
-
         try {
            
             const { mail, pseudo, password, firstname, lastname } = req.body
