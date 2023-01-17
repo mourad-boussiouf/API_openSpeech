@@ -101,9 +101,10 @@ const ConnexionFormulaire = () => {
                 headers: { 'Content-Type': 'application/json' },
                 body: (data)
             }).then(response => {
+
                     response.json()
                         .then(data => {
-
+                            console.log(data.message)
                             if (response.status !== 200)
                                 return setError({isError: true, message: data.message})
 
