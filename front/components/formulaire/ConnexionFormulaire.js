@@ -40,6 +40,8 @@ const ConnexionFormulaire = () => {
     const [error, setError] = useState({isError: false, message: ""})
     const [valide, setValide] = useState({isValide: false, message: ""})
 
+    const [isError, setIsError] = useState(false)
+
     const calculWidth = (pourcent) => {
         return dimensions.fullWidth - dimensions.fullWidth * pourcent
     }
@@ -114,54 +116,46 @@ const ConnexionFormulaire = () => {
                 headers: { 'Content-Type': 'application/json' },
                 body: (data)
             }).then(response => {
+
                     response.json()
                         .then(data => {
-
-
                             if (response.status !== 200)
-                                return setError({isError: true, message: data.message})
+                                return setError({isError: true, message: data.message});
 
-                            setValide({isValide: true, message: data.message})
-
-                            console.log(data.token);
-                            STORAGE_KEY.push(data.token);
-                            console.log("STORAGE KEY",STORAGE_KEY)
+                            setValide({isValide: true, message: data.message});
                             data.user.last_co === null ?  neverBeenConnected = true : neverBeenConnected = false;
 
-                            
-                        
+                         
                     });
                 
             })
-            let data2 = JSON.stringify({firstname:"toto"})
 
-            await fetch(API_USERS + '/profil/update', {
-                method: "PUT",
-                body: (data2)
+            const test = JSON.stringify({
+                last_co: new Date()
+            })
+
+            await fetch(API_USERS + "/lastCoUser", {
+                method: "PATCH",
+                headers: { 'Content-Type': 'application/json' },
+                body: (test)
             }).then(response => {
-                    response.json()
-                        .then(data2 => {
-                            console.log(response.status);
-                            console.log(data2);
 
-
-                            if (response.status !== 200)
-                                return setError({isError: true, message: data2.message})
-
-                           
-
-                            console.log(data2.firstname);
-                  
-
-                            
+                response.json()
+                    .then(ret => {
+                        console.log(ret)
+                        if (response.status !== 200)
+                            return setError({isError: true, message: ret.message}), setIsError(true)
                         
-                    });
-                
-            })
 
-            setTimeout(() => {
-                neverBeenConnected ? navigation.navigate("IntroStepByStep1") : navigation.navigate("ListMessages");
-            }, 3000); 
+                        setValide({isValide: true, message: ret.message})                         
+                        setIsError(false)
+                        
+                        setTimeout(() => {
+                            neverBeenConnected ? navigation.navigate("IntroStepByStep1") : navigation.navigate("ListMessages");
+                        }, 1000);
+                });
+            
+            })
 
         } catch (error) {
             console.log(error)
@@ -169,29 +163,6 @@ const ConnexionFormulaire = () => {
 
  
 
-    }
-
-    const Updatelastco = async () => {
-        try {
-        await fetch(API_USERS + '/profil/update', {
-            method: 'PUT',
-            headers: {
-              'Content-Type': 'application/x-www-form-urlencoded',
-              'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1vdXJhZCIsInVzZXJJZCI6MTcsImlhdCI6MTY3MzkwMzYzOSwiZXhwIjoxNjc0NTA4NDM5fQ.coPiEbKPwY0V14bvkdtuWo3HYgWaWS37bwueDQ4HWqg'
-            },
-            body:
-                "firstname=lolilol"
-          })
-          .then(response => response.json())
-          .then(data => console.log(data))
-        }catch(error){
-            console.log(error)
-        }
-        
-        //determinate the next screen according to current user data
-        setTimeout(() => {
-            neverBeenConnected ? navigation.navigate("IntroStepByStep1") : navigation.navigate("ListMessages");
-        }, 3000); 
     }
 
     return (
@@ -279,5 +250,4 @@ const ConnexionFormulaire = () => {
         </SafeAreaView>
     )
 }
-
 export default ConnexionFormulaire

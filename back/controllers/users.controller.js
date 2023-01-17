@@ -33,6 +33,7 @@ const usersController = {
             console.log(error)
         }
     },
+
     searchUsersLikeKeyword: async (req, res, next) => {
         try {
             const keyword = req.params.keyword;
@@ -48,9 +49,25 @@ const usersController = {
     }, 
     
     getAll: async (req, res, next) => {
+
+        console.log(req.cookies)
+        console.log(req.headers.cookie.split("=")[3])
+        console.log(req.user)
+
         try {
 
-            const reqToken = req.headers.authorization.split(' ')[1]
+            if (!req.headers.cookie.split("=")[3])
+                return res
+                    .status(400)
+                    .send({message: "Pas de token en headers"})
+                    .end()
+
+            const reqToken = req.headers.cookie.split("=")[3]
+
+            if (!req.cookies.token)
+                return res
+                    .status(400)
+                    .send({message: "Pas de token cookies"})
 
             const currentToken = req.cookies.token
 
@@ -60,14 +77,16 @@ const usersController = {
                     .send({message: "Token invalide"})
                     .end()
             
-            const [rows, fields] = await pool.query('SELECT firstname, lastname, mail from users')
-            res.json({
-                data: rows
-            })
-            pool.end()
+            const [rows] = await pool.query('SELECT firstname, lastname, mail from users')
+        
+            return res.status(200)
+                    .json({message: rows})
+                    .end()
+
         } catch (error) {
-            console.log(error)
-            res.json({status: "error"})
+            return res.status(400)
+                .send({message: "Erreur durant la traitement"})
+                .end()
         }
     },
 
@@ -173,6 +192,7 @@ const usersController = {
             const [findUser] = await pool.query(verifAuthUser, [mail])
 
             if (findUser.length > 0){
+
                 const correctPassword = await bcrypt.compare(
                     password,
                     findUser[0].password
@@ -282,12 +302,27 @@ const usersController = {
         }
     },
 
+    updateLastCo: async (req, res, next) => {
+      
+        try {
+            const sql = `UPDATE users SET last_co = NOW() WHERE id = ${req.cookies.id}` 
+
+            const updateSql = await pool.query(sql)
+
+            return res
+                .status(200)
+                .json({message: "Utilisateur mis à jour"})
+                .end()
+        } catch (error) {
+            console.log(error)
+        }
+    },
+
     updateMyProfile: async (req, res, next) => {
         console.log("CA MARCHEe PAS",array);
         try {
-            const {mail, password} = req.body
+    
             const actualUserId = req.cookies.id;
-            const actualUserMail = req.user.mail;
             
             var array = req.body
             var newArray = []
