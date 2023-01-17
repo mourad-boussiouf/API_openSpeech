@@ -27,6 +27,8 @@ const ConnexionFormulaire = () => {
     const [error, setError] = useState({isError: false, message: ""})
     const [valide, setValide] = useState({isValide: false, message: ""})
 
+    const [isError, setIsError] = useState(false)
+
     const calculWidth = (pourcent) => {
         return dimensions.fullWidth - dimensions.fullWidth * pourcent
     }
@@ -104,18 +106,48 @@ const ConnexionFormulaire = () => {
 
                     response.json()
                         .then(data => {
-                            console.log(data.message)
                             if (response.status !== 200)
-                                return setError({isError: true, message: data.message})
+                                return setError({isError: true, message: data.message}), setIsError(true)
+                            
 
-                            setValide({isValide: true, message: data.message})
-
-                            setTimeout(() => {
-                                navigation.navigate('ListMessages')
-                            }, 1000);
+                            // setValide({isValide: true, message: data.message})                         
+                            // setIsError(false)
+                            
+                            // setTimeout(() => {
+                            //     navigation.navigate('ListMessages')
+                            // }, 1000);
                     });
                 
             })
+
+            const test = JSON.stringify({
+                last_co: new Date()
+            })
+
+            await fetch(API_USERS + "/lastCoUser", {
+                method: "PATCH",
+                headers: { 'Content-Type': 'application/json' },
+                body: (test)
+            }).then(response => {
+
+                response.json()
+                    .then(ret => {
+                        console.log(ret)
+                        if (response.status !== 200)
+                            return setError({isError: true, message: ret.message}), setIsError(true)
+                        
+
+                        setValide({isValide: true, message: ret.message})                         
+                        setIsError(false)
+                        
+                        setTimeout(() => {
+                            navigation.navigate('ListMessages')
+                        }, 1000);
+                });
+            
+            })
+
+
         } catch (error) {
             console.log(error)
         }

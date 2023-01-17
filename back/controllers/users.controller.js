@@ -192,6 +192,7 @@ const usersController = {
             const [findUser] = await pool.query(verifAuthUser, [mail])
 
             if (findUser.length > 0){
+
                 const correctPassword = await bcrypt.compare(
                     password,
                     findUser[0].password
@@ -300,11 +301,26 @@ const usersController = {
         }
     },
 
+    updateLastCo: async (req, res, next) => {
+      
+        try {
+            const sql = `UPDATE users SET last_co = NOW() WHERE id = ${req.cookies.id}` 
+
+            const updateSql = await pool.query(sql)
+
+            return res
+                .status(200)
+                .json({message: "Utilisateur mis à jour"})
+                .end()
+        } catch (error) {
+            console.log(error)
+        }
+    },
+
     updateMyProfile: async (req, res, next) => {
         try {
-            const {mail, password} = req.body
+    
             const actualUserId = req.cookies.id;
-            const actualUserMail = req.user.mail;
             
             var array = req.body
             var newArray = []
