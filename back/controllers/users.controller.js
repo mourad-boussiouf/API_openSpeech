@@ -192,13 +192,14 @@ const usersController = {
                     });
 
                     //send the token in an HTTP only cookie
-                    res.cookie("token", token, {httpOnly: true});
-                    res.cookie("id", findUser[0].id, {httpOnly: true});
-                    res.cookie("role", findUser[0].id_role, {httpOnly: true})
+                    res.cookie("token", token, {secure:false});
+                    res.cookie("id", findUser[0].id, {httpOnly: true , secure:false});
+                    res.cookie("role", findUser[0].id_role, {httpOnly: true, secure:false})
+
 
                     res.status(200).send({message: "Connexion réussie", token: token, user: findUser[0]})
                 }
-            } else {
+            } else { 
                 return res.status(400).json({message: "Email ou mot de passe incorrect"})
             }
 
@@ -282,6 +283,7 @@ const usersController = {
     },
 
     updateMyProfile: async (req, res, next) => {
+        console.log("CA MARCHEe PAS",array);
         try {
             const {mail, password} = req.body
             const actualUserId = req.cookies.id;
@@ -303,7 +305,13 @@ const usersController = {
 
                         newArray.push(` ${key} = '${passwordHash}' `)
                     }
-                } else {
+                } 
+                else if (key === "last_co"){
+                    console.log("CA MARCHEe PAS",array);
+                    newArray.push(` ${key} = NOW() `)
+                }
+                else {
+                    console.log("CA MARCHEe PAS",array);
                     newArray.push(` ${key} = '${value}' `)
                 }
             }

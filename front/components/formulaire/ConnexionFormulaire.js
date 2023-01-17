@@ -4,9 +4,7 @@ import { SafeAreaView, Text, TextInput, TouchableOpacity, View} from 'react-nati
 import { useTheme } from '@react-navigation/native';
 import TitreViewer from '../base/TitreViewer';
 
-
 import Checkbox from 'expo-checkbox';
-
 
 import { dimensions, margin, padding } from '../../styles/Base';
 import ButtonSubmit from '../base/ButtonSubmit';
@@ -19,19 +17,10 @@ import { useNavigation } from '@react-navigation/native';
 
 const ConnexionFormulaire = () => {
 
-    let STORAGE_KEY = 'id_token';
-    let neverBeenConnected = 0;
+    let STORAGE_KEY = [];
+    let req = {user :{id :17, role:2, token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1vdXJhZCIsInVzZXJJZCI6MTcsImlhdCI6MTY3Mzg5NjMxNiwiZXhwIjoxNjc0NTAxMTE2fQ.AOcg0uIoxwB8vVSogcUhNhkG-H33gX_jE3YHUhjhUtc"}}
+    let neverBeenConnected = false;
 
-    const itIsFirstConnection = async (yesOrNo) => {
-        try {
-            if(yesOrNo === "yes"){
-                neverBeenConnected = 1; 
-            }
-          } catch (error) {
-            console.log('error: ' + error.message);
-          }
-          return
-    }
 
 /*     const permuteNewTokenFromOldOne = async (item, selectedValue) => {
         try {
@@ -133,22 +122,77 @@ const ConnexionFormulaire = () => {
                                 return setError({isError: true, message: data.message})
 
                             setValide({isValide: true, message: data.message})
-                            data.token = STORAGE_KEY;
-                            data.user.last_co === null ? itIsFirstConnection("yes") : itIsFirstConnection("no");
+
+                            console.log(data.token);
+                            STORAGE_KEY.push(data.token);
+                            console.log("STORAGE KEY",STORAGE_KEY)
+                            data.user.last_co === null ?  neverBeenConnected = true : neverBeenConnected = false;
+
+                            
                         
                     });
                 
             })
+            let data2 = JSON.stringify({firstname:"toto"})
+
+            await fetch(API_USERS + '/profil/update', {
+                method: "PUT",
+                body: (data2)
+            }).then(response => {
+                    response.json()
+                        .then(data2 => {
+                            console.log(response.status);
+                            console.log(data2);
+
+
+                            if (response.status !== 200)
+                                return setError({isError: true, message: data2.message})
+
+                           
+
+                            console.log(data2.firstname);
+                  
+
+                            
+                        
+                    });
+                
+            })
+
+            setTimeout(() => {
+                neverBeenConnected ? navigation.navigate("IntroStepByStep1") : navigation.navigate("ListMessages");
+            }, 3000); 
+
         } catch (error) {
             console.log(error)
-        }  
+        }    
 
-        setTimeout(() => {
-            console.log(neverBeenConnected);
-            navigation.navigate('ListMessages')
-        }, 1000); 
+ 
+
     }
 
+    const Updatelastco = async () => {
+        try {
+        await fetch(API_USERS + '/profil/update', {
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'application/x-www-form-urlencoded',
+              'Authorization': 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6Im1vdXJhZCIsInVzZXJJZCI6MTcsImlhdCI6MTY3MzkwMzYzOSwiZXhwIjoxNjc0NTA4NDM5fQ.coPiEbKPwY0V14bvkdtuWo3HYgWaWS37bwueDQ4HWqg'
+            },
+            body:
+                "firstname=lolilol"
+          })
+          .then(response => response.json())
+          .then(data => console.log(data))
+        }catch(error){
+            console.log(error)
+        }
+        
+        //determinate the next screen according to current user data
+        setTimeout(() => {
+            neverBeenConnected ? navigation.navigate("IntroStepByStep1") : navigation.navigate("ListMessages");
+        }, 3000); 
+    }
 
     return (
 
@@ -207,7 +251,6 @@ const ConnexionFormulaire = () => {
             >
                 Mot de passe oublié ?
             </Text>
-            
             
             <ButtonSubmit titre="Se connecter" onPress={onPress}/>
 

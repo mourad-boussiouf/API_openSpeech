@@ -24,7 +24,7 @@ import AppLightTheme from './styles/AppLightTheme';
 import AppDarkTheme from './styles/AppDarkTheme';
 import InscriptionScreen from './screen/InscriptionScreen';
 import ListMessages from './screen/ListMessages';
-import introStepByStep1 from './screen/introStepByStep1';
+import IntroStepByStep1 from './screen/IntroStepByStep1';
 
 
 // import { LogBox } from 'react-native';
@@ -57,6 +57,7 @@ export default function App() {
                             <Stack.Screen name="Home" component={HomeScreen} />
                             <Stack.Screen name="Inscription" component={InscriptionScreen}/>
                             <Stack.Screen name="ListMessages" component={ListMessages}/>
+                            <Stack.Screen name="IntroStepByStep1" component={IntroStepByStep1}/>
                         </Stack.Navigator>
                     </>
                     
