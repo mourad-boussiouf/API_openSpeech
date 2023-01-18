@@ -144,12 +144,10 @@ const ConnexionFormulaire = () => {
                     .then(ret => {
                         console.log(ret)
                         if (response.status !== 200)
-                            return setError({isError: true, message: ret.message}), setIsError(true)
+                            return setError({isError: true, message: ret.message})
                         
 
-                                            
-                        setIsError(false)
-                        
+                                                                    
                         setTimeout(() => {
                             neverBeenConnected ? navigation.navigate("IntroStepByStep1") : navigation.navigate("ListMessages");
                         }, 1000);

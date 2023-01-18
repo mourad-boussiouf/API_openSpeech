@@ -1,6 +1,6 @@
 /* Import React and React native components  */
 import React, { useState, useEffect } from 'react';
-import { StyleSheet, SafeAreaView, StatusBar, useColorScheme,AsyncStorage } from 'react-native';
+import { StyleSheet, SafeAreaView, StatusBar, useColorScheme } from 'react-native';
 
 
 /* Import React navigation  */
@@ -54,10 +54,10 @@ export default function App() {
                     <>
                         <StatusBar barStyle={"light-content"}/>
                         <Stack.Navigator screenOptions={{headerShown: false}}>
+                            <Stack.Screen name="IntroStepByStep1" component={IntroStepByStep1}/>
                             <Stack.Screen name="Home" component={HomeScreen} />
                             <Stack.Screen name="Inscription" component={InscriptionScreen}/>
                             <Stack.Screen name="ListMessages" component={ListMessages}/>
-                            <Stack.Screen name="IntroStepByStep1" component={IntroStepByStep1}/>
                         </Stack.Navigator>
                     </>
                     
