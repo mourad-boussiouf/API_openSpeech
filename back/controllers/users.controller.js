@@ -303,7 +303,7 @@ const usersController = {
     },
 
     updateLastCo: async (req, res, next) => {
-      
+      console.log("COOKIES",req.cookies)
         try {
             const sql = `UPDATE users SET last_co = NOW() WHERE id = ${req.cookies.id}` 
 

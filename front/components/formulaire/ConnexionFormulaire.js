@@ -122,7 +122,7 @@ const ConnexionFormulaire = () => {
                             if (response.status !== 200)
                                 return setError({isError: true, message: data.message});
 
-                            setValide({isValide: true, message: data.message});
+                            setValide({isValide: true, message: data.message})    
                             data.user.last_co === null ?  neverBeenConnected = true : neverBeenConnected = false;
 
                          
@@ -147,7 +147,7 @@ const ConnexionFormulaire = () => {
                             return setError({isError: true, message: ret.message}), setIsError(true)
                         
 
-                        setValide({isValide: true, message: ret.message})                         
+                                            
                         setIsError(false)
                         
                         setTimeout(() => {
