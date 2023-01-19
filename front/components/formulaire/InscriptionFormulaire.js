@@ -16,6 +16,8 @@ import * as ImagePicker from 'expo-image-picker';
 import { API_USERS } from '../../services/config';
 import ValideWarning from '../warning/ValideWarning';
 
+import { Feather } from '@expo/vector-icons'; 
+
 
 
 const InscriptionFormulaire = () => {
@@ -53,6 +55,11 @@ const InscriptionFormulaire = () => {
     }
 
     const styles = {
+        headNav: {
+            position: "absolute",
+            top: calculHeight(0.975),
+            left: calculHeight(0.975)
+        },
         input: {
             borderWidth: 1,
             borderColor: colors.border,
@@ -185,46 +192,42 @@ const InscriptionFormulaire = () => {
                 .then(response => {
                     response.json()
                         .then(data => {
-                            console.log(response.status)
-                            if (response.status !== 200)
-                                return setError({isError: true, message: data.message}), setIsError(true)
+                            if (response.status !== 200){
+                                return (setError({isError: true, message: data.message}), setIsError(true))
+                            }
 
                             setValide({isValide: true, message: data.message})                         
                             setIsError(false)
-                    });
+
+                            let apiUrlUpload = API_USERS + "/upload";
+    
+                            let uriParts = image.split('.');
+                            let fileType = uriParts[uriParts.length - 1];
                 
+                            let formData = new FormData();
+                            formData.append('profile', {
+                                name: image ,
+                                type: "image/jpg",
+                                uri: image,
+                            });
+                            formData.append('pseudo', pseudo)
+                
+                            let options = {
+                                method: 'POST',
+                                body: formData,
+                            };
+                            
+                            fetch(apiUrlUpload, options).then(function(resp) {
+                
+                                if (resp.status !== 200)
+                                    return setError({isError: true, message: "Erreur durant l'upload"})
+                
+                                setTimeout(() => {
+                                    navigation.navigate('Home')
+                                }, 1500);
+                            });
+                    });
             })
-
-            if(isError === true)
-                return setError({isError: true, message: "Erreur durant la traitement"})
-            
-            let apiUrlUpload = API_USERS + "/upload";
-
-            let uriParts = image.split('.');
-            let fileType = uriParts[uriParts.length - 1];
-
-            let formData = new FormData();
-            formData.append('profile', {
-                name: image ,
-                type: "image/jpg",
-                uri: image,
-            });
-            formData.append('pseudo', pseudo)
-
-            let options = {
-                method: 'POST',
-                body: formData,
-            };
-            
-            await fetch(apiUrlUpload, options).then(function(resp) {
-
-                if (resp.status !== 200)
-                    return setError({isError: true, message: "Erreur durant l'upload"})
-
-                setTimeout(() => {
-                    navigation.navigate('Home')
-                }, 1500);
-            });
     
         } catch (error) {
             console.log(error)
@@ -244,6 +247,11 @@ const InscriptionFormulaire = () => {
                 
             return setError({isError: true, message: "Aucun fichier sélectionné"})
         
+    }
+
+    const NavBack = () => {
+        setFirstStep(true)
+        setSecondStep(false)
     }
     
     return (
@@ -267,6 +275,7 @@ const InscriptionFormulaire = () => {
             {
                 firstStep === true ? 
                     <>
+
                         <TitreViewer titre="Inscription"/>
 
                         <View style={{top: calculHeight(0.95)}}>
@@ -330,6 +339,10 @@ const InscriptionFormulaire = () => {
                     </>
                 : 
                     <>
+                        <TouchableOpacity style={styles.headNav} onPress={NavBack}>
+                            <Feather name="arrow-left-circle" size={20} color="black" />
+                        </TouchableOpacity>
+
                         <TitreViewer titre="Une dernière étape" sousTitre="Ajoutez un avatar pour finaliser votre inscription"/> 
 
                         

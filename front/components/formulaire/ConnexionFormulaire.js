@@ -106,47 +106,45 @@ const ConnexionFormulaire = () => {
 
                     response.json()
                         .then(data => {
-                            if (response.status !== 200)
-                                return setError({isError: true, message: data.message}), setIsError(true)
-                            
 
-                            // setValide({isValide: true, message: data.message})                         
-                            // setIsError(false)
+                            if (response.status !== 200)
+                                return setError({isError: true, message: data.message}), setIsError(true), setValide({isValide: false})
+
+                            let currentId = data.user.id
+
+                            const test = JSON.stringify({
+                                last_co: new Date()
+                            })
+                
+
+                            fetch(API_USERS + "/lastCoUser", {
+                                method: "PATCH",
+                                headers: { 'Content-Type': 'application/json' },
+                                body: (test)
+                            }).then(response => {
+                
+                                response.json()
+                                    .then(ret => {
+                                        if (response.status !== 200)
+                                            return setError({isError: true, message: ret.message}), setIsError(true)
+                                        
+                
+                                        setValide({isValide: true, message: ret.message})                         
+                                        setIsError(false)
+                                        
+                                        setTimeout(() => {
+                                            navigation.navigate('ListMessages',
+                                                {
+                                                    id: currentId
+                                                }
+                                            )
+                                        }, 1000);
+                                });
                             
-                            // setTimeout(() => {
-                            //     navigation.navigate('ListMessages')
-                            // }, 1000);
+                            })
                     });
                 
             })
-
-            const test = JSON.stringify({
-                last_co: new Date()
-            })
-
-            await fetch(API_USERS + "/lastCoUser", {
-                method: "PATCH",
-                headers: { 'Content-Type': 'application/json' },
-                body: (test)
-            }).then(response => {
-
-                response.json()
-                    .then(ret => {
-                        console.log(ret)
-                        if (response.status !== 200)
-                            return setError({isError: true, message: ret.message}), setIsError(true)
-                        
-
-                        setValide({isValide: true, message: ret.message})                         
-                        setIsError(false)
-                        
-                        setTimeout(() => {
-                            navigation.navigate('ListMessages')
-                        }, 1000);
-                });
-            
-            })
-
 
         } catch (error) {
             console.log(error)

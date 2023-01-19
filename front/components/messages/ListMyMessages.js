@@ -1,10 +1,15 @@
 import { View, Text } from 'react-native'
 import React, { useEffect } from 'react'
-import { API_USERS } from '../../services/config'
+import { API_CONV } from '../../services/config'
+import { useRoute } from '@react-navigation/native'
 
 const ListMyMessages = () => {
 
-    const UrlApiUsers = API_USERS + '/list'
+    const route = useRoute()
+
+    console.log(route.params.id)
+
+    const UrlApiUsers = API_CONV + '/mine'
 
     const getList = async () => {
 

@@ -50,10 +50,6 @@ const usersController = {
     
     getAll: async (req, res, next) => {
 
-        console.log(req.cookies)
-        console.log(req.headers.cookie.split("=")[3])
-        console.log(req.user)
-
         try {
 
             if (!req.headers.cookie.split("=")[3])
@@ -163,7 +159,7 @@ const usersController = {
                     const [query] = await pool.query(sqlRegister, [mail, pseudo, passwordHash, firstname, lastname, "2"])
 
                     res.status(200)
-                        .json({message: "Inscription effectué avec succés, bienvenue."})
+                        .json({message: "Inscription effectuée, bienvenue."})
                         .end()
                 }
                 
@@ -190,6 +186,12 @@ const usersController = {
             const verifAuthUser = "SELECT * from users where mail = ?"
 
             const [findUser] = await pool.query(verifAuthUser, [mail])
+
+            if (findUser[0] === undefined)   
+                return res
+                    .status(400)
+                    .json({message: "Email ou mot de passe incorrect"})
+                    .end()
 
             if (findUser.length > 0){
 
@@ -302,7 +304,7 @@ const usersController = {
     },
 
     updateLastCo: async (req, res, next) => {
-      
+
         try {
             const sql = `UPDATE users SET last_co = NOW() WHERE id = ${req.cookies.id}` 
 
@@ -310,7 +312,7 @@ const usersController = {
 
             return res
                 .status(200)
-                .json({message: "Utilisateur mis à jour"})
+                .json({message: "Connexion réussie"})
                 .end()
         } catch (error) {
             console.log(error)

@@ -24,8 +24,6 @@ router.post('/login', userController.login)
 
 router.post("/upload", upload.single("profile"), userController.test, (req, res, next) => {
     const file = req.file;
-    console.log(req.body)
-    console.log(file)
     if (!file) {
       const error = new Error("Please upload a file");
       error.httpStatusCode = 400;

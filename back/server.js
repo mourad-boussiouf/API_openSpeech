@@ -19,11 +19,11 @@ app.use(express.urlencoded({extended: true}))
 app.use(express.json())
 
 const usersRouter = require('./routes/users.routes')
-const chatsRouter = require('./routes/chats.routes')
+const conversationsRouter = require('./routes/conversations.routes')
 const adminRouter = require('./routes/admin.routes')
 
 app.use('/user', usersRouter)
-app.use('/chat', chatsRouter)
+app.use('/conversations', conversationsRouter)
 app.use('/admin', adminRouter)
 
 // respond with "hello world" when a GET request is made to the homepage
