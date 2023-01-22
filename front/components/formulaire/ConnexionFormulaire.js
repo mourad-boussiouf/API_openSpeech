@@ -21,8 +21,8 @@ const ConnexionFormulaire = () => {
 
     const { colors } = useTheme();
 
-    const [email, onChangeEmail] = useState()
-    const [password, onChangePassword] = useState()
+    const [email, onChangeEmail] = useState('admin@hotmail.fr')
+    const [password, onChangePassword] = useState('adminadmin')
     const [isChecked, setChecked] = useState(false);
     const [error, setError] = useState({isError: false, message: ""})
     const [valide, setValide] = useState({isValide: false, message: ""})

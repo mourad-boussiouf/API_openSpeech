@@ -9,7 +9,7 @@ var multer = require('multer');
 
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-      cb(null, "uploads");
+      cb(null, "public/images");
     },
     filename: function (req, file, cb) {
       cb(null, Math.random().toString(36).slice(2, 7) + file.originalname);
@@ -22,7 +22,7 @@ const isAuth = require('../middlewares/isAuthMiddleware')
 router.post('/register', userController.register);
 router.post('/login', userController.login)
 
-router.post("/upload", upload.single("profile"), userController.test, (req, res, next) => {
+router.post("/upload", upload.single("profile"), userController.avatar, (req, res, next) => {
     const file = req.file;
     if (!file) {
       const error = new Error("Please upload a file");
@@ -30,7 +30,7 @@ router.post("/upload", upload.single("profile"), userController.test, (req, res,
       return next(error);
     }
     res.status(200).send(file).end();
-  });
+});
 
 router.get('/search/:keyword', userController.searchUsersLikeKeyword);
 

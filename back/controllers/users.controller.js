@@ -15,7 +15,7 @@ const jwt = require("jsonwebtoken");
  * 
  */
 const usersController = {
-    test: async(req, res, next) => {
+    avatar: async(req, res, next) => {
         try {
             const {pseudo} = req.body
 
@@ -225,7 +225,7 @@ const usersController = {
             }
 
         } catch (error) {
-            console.log(error)
+            console.log("Login" + error)
         }
     }, 
 

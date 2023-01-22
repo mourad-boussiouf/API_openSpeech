@@ -18,7 +18,7 @@ const HeaderNav = () => {
             justifyContent: "space-between",
             paddingHorizontal: padding.m,
             alignItems: "center",
-            paddingTop: padding.s
+            paddingTop: 12
         },
         title: {
             fontSize: 16,
@@ -32,7 +32,7 @@ const HeaderNav = () => {
   return (
     <View style={styles.container}>
         <TouchableOpacity>
-            <Ionicons name="ios-arrow-back" size={20} color={colors.background} style={styles.icons}/>
+            <Ionicons name="ios-arrow-back" size={18} color={colors.background} style={styles.icons}/>
         </TouchableOpacity>
         <View>
             <Text style={styles.title}>Chats</Text>

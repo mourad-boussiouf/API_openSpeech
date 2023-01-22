@@ -1,13 +1,17 @@
-import { View, Text } from 'react-native'
-import React, { useEffect } from 'react'
+import { View, Text, SafeAreaView, FlatList } from 'react-native'
+import React, { useEffect, useState } from 'react'
 import { API_CONV } from '../../services/config'
 import { useRoute } from '@react-navigation/native'
 
+import ItemList from './liste/ItemList'
+import { dimensions } from '../../styles/Base'
+
+
+
 const ListMyMessages = () => {
 
-    const route = useRoute()
+    const [data, setData] = useState([])
 
-    console.log(route.params.id)
 
     const UrlApiUsers = API_CONV + '/mine'
 
@@ -18,23 +22,52 @@ const ListMyMessages = () => {
         })
             .then(response => {
                 response.json()
-                    .then(data => {
-                        console.log(response.status)
-                        console.log(data.message)
+                    .then(respdata => {
+                        setData(respdata.data)
                     })
             })
 
     } 
-
+  
     useEffect(() => {
         getList()
     }, [])
 
+    const calculWidth = (pourcent) => {
+        return dimensions.fullWidth - dimensions.fullWidth * pourcent
+    }
+
+    const calculHeight = (pourcent) => {
+        return dimensions.fullHeight - dimensions.fullHeight * pourcent
+    }  
+
+    console.log(data)
     return (
-        <View>
-        <Text>Hello</Text>
-        </View>
+
+        <SafeAreaView>
+
+            <View style={{top: calculHeight(0.88)}}>
+                <FlatList 
+                    data={data}
+                    renderItem={(
+                        {item}) => 
+                            <ItemList 
+                                message={item.content} 
+                                pseudo={item.pseudo}
+                                notifications={item.notifications}
+                                created_at={item.last_send_date}
+                                avatar={item.urlAvatar}
+                                idChat={item.conversation_id}
+                            />
+                    }
+                    keyExtractor={item => item.id}
+                />   
+            </View>
+        </SafeAreaView>
+        
     )
+   
+    
 }
 
 export default ListMyMessages

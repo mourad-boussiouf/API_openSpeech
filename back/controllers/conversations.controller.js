@@ -9,6 +9,17 @@ const conversationsController = {
     manageConversations: async (req, res, next) => {
         try {
 
+            if (!req.body.id_participant)
+                return res
+                    .status(400)
+                    .json({message: "Aucun utilisateur selectionné"})
+                    .end()
+            
+            if (!req.cookies.id)
+                return res
+                    .status(400)
+                    .json({message: "Aucun utilisateur authentifié"})
+
             const otherParticipantId = req.body.id_participant
 
             var verifExistUser = "SELECT * FROM users WHERE id = ?"
@@ -40,17 +51,126 @@ const conversationsController = {
 
                 if (verifyExistantChat){
                     isExist = true
-                    idChat = item.id_chat
+                    idChat = item.conversations_id
                 } 
             })
 
-            if (isExist === true)
-                return res.json({message: "Conversation existante"})
 
-            if (isExist === false)
-                return res.json({message: "Aucune conv"})
+            /* Conversation Existante */
+            if (isExist === true){
 
+                if (!req.body.message)
+                    return res
+                        .status(400)
+                        .json({message: "Veuillez insérer un message"})
+                        .end()
+
+                const message = req.body.message
+
+                if (message.length < 1)
+                    return res
+                        .status(400)
+                        .json({message: "Veuillez insérer un message"})
+                        .end()
+
+                /* AJOUT D'UN NOUVEAU MESSAGE */
+                var insertMessage = "INSERT INTO messages (content, user_id, conversation_id) values (?, ?, ?)"
+
+                const [ExecInsertMessage] = await pool.query(insertMessage, [message, authUserId, idChat])
+
+                if (ExecInsertMessage.warningStatus !== 0)
+                    return res
+                        .status(400)
+                        .json({message: "Erreur durant le traitement"})
+                        .end()
+
+                /* UPDATE CONVERSATIONS APRES ENVOI D'UN NOUVEAU MESSAGE  */
+                var insertMessageId = ExecInsertMessage.insertId
+
+                var updateConvLastMessage = "UPDATE conversations SET last_message_id = ? WHERE id = ?"
+
+                const [ExecUpdateConvLastMessage] = await pool.query(updateConvLastMessage, [insertMessageId, idChat])
+
+                if (ExecUpdateConvLastMessage.changedRows == 0)
+                    return res
+                        .status(400)
+                        .json({message: "Erreur durant le traitement"})
+                        .end()
                 
+                if (ExecUpdateConvLastMessage.warningStatus !== 0)
+                    return res
+                        .status(400)
+                        .json({message: "Erreur durant le traitement"})
+                        .end()
+
+                return res.status(200).send({message: "Message envoyé"}).end()
+
+            }
+
+            /* Nouvelle Conversation */
+            if (isExist === false){
+
+                if (!req.body.message)
+                    return res
+                        .status(400)
+                        .json({message: "Veuillez insérer un message"})
+                        .end()
+
+                const message = req.body.message
+
+                if (message.length < 1)
+                    return res
+                        .status(400)
+                        .json({message: "Veuillez insérer un message"})
+                        .end()
+
+                var createNewConversation = "INSERT INTO conversations (last_message_id) values (NULL)"
+
+                const [ExecCreateNewConversation] = await pool.query(createNewConversation)
+
+                if (ExecCreateNewConversation.warningStatus !== 0)
+                    return res
+                        .status(400)
+                        .json({message: "Erreur durant le traitement"})
+                        .end()
+
+                const newConversationId = ExecCreateNewConversation.insertId
+
+                var createNewParticipants = "INSERT INTO participants (user_id, conversations_id) values (?,?) , (?,?)"
+
+                const [ExecCreateNewParticipants] = await pool.query(createNewParticipants, [authUserId, newConversationId, otherParticipantId, newConversationId])
+
+                if (ExecCreateNewParticipants.warningStatus !== 0)
+                    return res
+                        .status(400)
+                        .json({message: "Erreur durant le traitement"})
+                        .end()
+                
+                var createNewMessage = "INSERT INTO messages (content, user_id, conversation_id, isGeneral) values (?, ?, ?, ?)"
+
+                const [ExecCreateNewMessage] = await pool.query(createNewMessage, [message, authUserId, newConversationId, "0"])
+
+                if (ExecCreateNewMessage.warningStatus !== 0)
+                    return res
+                        .status(400)
+                        .json({message: "Erreur durant le traitement"})
+                        .end()
+
+                const newMessageId = ExecCreateNewMessage.insertId
+
+                var updateConversationLastMessage = "UPDATE conversations SET last_message_id = ? WHERE id = ?"
+
+                const [ExecUpdateConversationLastMessage] = await pool.query(updateConversationLastMessage, [newMessageId, newConversationId])
+
+                if (ExecUpdateConversationLastMessage.warningStatus !== 0)
+                    return res
+                        .status(400)
+                        .json({message: "Erreur durant le traitement"})
+                        .end()
+
+                return res.status(200).json({message: "Conversation créée"})
+
+            }
         } catch (error) {
             console.log(error)
         }
@@ -64,11 +184,12 @@ const conversationsController = {
 
             const sql = 
             `SELECT
-			    conversations.id,
+			    conversations.id as conversation_id,
                 auth_user.message_read_at < messages.created_at AS has_unread_messages,
-                messages.id,
+                (SELECT COUNT(*) FROM messages as m WHERE m.conversation_id = conversations.id AND m.created_at > auth_user.message_read_at) as notifications,
+                messages.id as message_id,
                 messages.content,
-                messages.created_at,
+                messages.created_at as last_send_date,
                 messages.user_id = ${id} AS mine,
                 other_users.id,
                 other_users.pseudo,
@@ -90,7 +211,7 @@ const conversationsController = {
                 .json({data: ExecQuery})
                 .end()
         } catch (error) {
-            console.log(error)
+            console.log("GetConversation" + error)
         }
     }
 }

@@ -18,6 +18,9 @@ app.use(express.urlencoded({extended: true}))
 
 app.use(express.json())
 
+app.use(express.static('public')); 
+app.use('/public', express.static('images'));
+
 const usersRouter = require('./routes/users.routes')
 const conversationsRouter = require('./routes/conversations.routes')
 const adminRouter = require('./routes/admin.routes')

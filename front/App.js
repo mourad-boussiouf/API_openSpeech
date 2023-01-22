@@ -12,12 +12,13 @@ import ImageViewer from './components/base/ImageViewer';
 const PlaceholderImage = require('./assets/1.png');
 
 /* Import First screen  */
-import HomeScreen from './screen/HomeScreen';
+import HomeScreen from './screen/Auth/HomeScreen';
 
 import AppLightTheme from './styles/AppLightTheme';
 import AppDarkTheme from './styles/AppDarkTheme';
-import InscriptionScreen from './screen/InscriptionScreen';
-import ListMessages from './screen/ListMessages';
+import InscriptionScreen from './screen/Auth/InscriptionScreen';
+import ListMessages from './screen/Conversations/ListMessages';
+import Conversation from './screen/Conversations/Conversation';
 
 
 // import { LogBox } from 'react-native';
@@ -47,10 +48,17 @@ export default function App() {
                     <>
                         <StatusBar barStyle={"light-content"}/>
                         <Stack.Navigator screenOptions={{headerShown: false}}>
-                            <Stack.Screen name="Home" component={HomeScreen} />
-                            <Stack.Screen name="Inscription" component={InscriptionScreen}/>
-                            <Stack.Screen name="ListMessages" component={ListMessages}/>
+                            <Stack.Group>
+                                <Stack.Screen name="Home" component={HomeScreen} />
+                                <Stack.Screen name="Inscription" component={InscriptionScreen}/>   
+                            </Stack.Group>
+                            <Stack.Group>
+                                <Stack.Screen name="ListMessages" component={ListMessages}/>
+                                <Stack.Screen name="conversation" component={Conversation}/>
+                            </Stack.Group>
+                                
                         </Stack.Navigator>
+                        
                     </>
                     
                 :
