@@ -6,8 +6,8 @@ export default [
     },
     {
         id: 2,
-        title : "Les frontières n'ont plus de limites",
-        description : "Plus la peine de passer de longues minutes à traduire des messages, notre application s'en charge pour vous."
+        title : "Les frontières n'ont plus de limites ",
+        description : "Plus la peine de manuellement traduire des messages. \nNotre application s'en charge pour vous."
     },
     {
         id: 3,
@@ -17,6 +17,6 @@ export default [
     {
         id: 4,
         title : "Prêt ?",
-        description : "Nous allons vous inviter à paramétrer votre langue utilisée. D'autres langues seront disponibles à l'avenir, bon chat !"
+        description : "Nous allons vous inviter à paramétrer votre langue utilisée. Bon chat !"
     }
 ];

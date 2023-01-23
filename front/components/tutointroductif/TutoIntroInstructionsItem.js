@@ -30,6 +30,7 @@ const TutoIntroInstructionsItem = ({item}) => {
       textAlign: 'center',
       height: "200%",
       elevation:50,
+      fontFamily: "Froza Libre"
      },
      descr: {
       resizeMode: 'contain',
