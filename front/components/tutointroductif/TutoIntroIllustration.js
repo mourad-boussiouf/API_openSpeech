@@ -3,8 +3,7 @@ import React from 'react';
 import { StyleSheet, SafeAreaView, StatusBar, useColorScheme } from 'react-native';
 import ImageViewer from '../base/ImageViewer';
 import TutoIntroInstructions from './TutoIntroInstructions';
-const svgIntro = require('../../assets/introStepByStepRessources/svgIntro.svg');
-import SvgComponent from './SvgComponent';
+import SvgCharactersDraw from './SvgCharactersDrawRED';
 import { dimensions, margin } from '../../styles/Base';
 const calculWidth = (pourcent) => {
     return dimensions.fullWidth - dimensions.fullWidth * pourcent
@@ -16,9 +15,9 @@ const calculHeight = (pourcent) => {
 const tutoIntroIllustration = () => {
   return (
     <SafeAreaView>
-    <View style={styles.container}>
-        <SvgComponent style = {styles.image}/>
-    </View>
+      <View style={styles.container}>
+        <SvgCharactersDraw style = {styles.image}/>
+      </View>
     </SafeAreaView>
   )
 }

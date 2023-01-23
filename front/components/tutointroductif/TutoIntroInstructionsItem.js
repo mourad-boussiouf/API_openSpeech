@@ -2,7 +2,6 @@ import React from 'react';
 import { View, Text, StyleSheet, FlatList, useColorScheme, SafeAreaView, useWindowDimensions } from 'react-native'
 import { dimensions, margin } from '../../styles/Base';
 
-
 const TutoIntroInstructionsItem = ({item}) => {
 
   const calculWidth = (pourcent) => {

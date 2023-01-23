@@ -7,7 +7,9 @@ import { dimensions, margin, padding } from '../../styles/Base';
 const IntroItem = ( {item} ) => {
 
     const { width } = useWindowDimensions();
+
     const { colors } = useTheme();
+
     const calculWidth = (pourcent) => {
         return dimensions.fullWidth - dimensions.fullWidth * pourcent
     }
@@ -15,11 +17,13 @@ const IntroItem = ( {item} ) => {
     const calculHeight = (pourcent) => {
         return dimensions.fullHeight - dimensions.fullHeight * pourcent
     }
-
+    
     const calculScale = (size) => {
         let scale = dimensions.fullWidth / 320
         return size * scale
     }
+
+    const darklight = colors === 'light' ? 0 : 1;
 
     const styles = StyleSheet.create({
         container: {
@@ -29,7 +33,6 @@ const IntroItem = ( {item} ) => {
         },
         title: {
             marginTop: item.title.length > 26 ? 2.5 : 0,
-            flex : 1,
             justifyContent: "center",
             alignSelf: "center",
             color: colors.primary,
@@ -39,13 +42,12 @@ const IntroItem = ( {item} ) => {
             flexWrap: "wrap",
         },
         description:{
-            position: "absolute",
-            top: calculHeight(0.92),
+            top: calculHeight(0.98),
             alignSelf: "center",
-            color: colors.border,
+            color: colors.card,
             fontWeight:'300',
             fontSize: 16,
-            color: '#62656b',
+           
             textAlign:'center',
             paddingHorizontal: 64,
             flexWrap: "wrap",
@@ -60,14 +62,26 @@ const IntroItem = ( {item} ) => {
             height: "200%",
         }
     });
-    
+
     return (
-
         <View style={[styles.container, { width }]}>
-            <Text style={styles.title}>{item.title}</Text>
-            <Text style={styles.description}>{item.description}</Text>
+            {
+                item.id === 1 ?
+                <>
+                    <Text style={styles.title}>{item.title}</Text>
+                    <Text style={styles.description}>
+                    {item.description[0]}
+                    <Text style = {{fontWeight: "600"}}>{item.description[1]}</Text>
+                    {item.description[2]}
+                    </Text> 
+                </>
+                :
+                <>
+                    <Text style={styles.title}>{item.title}</Text>
+                    <Text style={styles.description}>{item.description}</Text> 
+                </>
+            }
         </View>
-
     )
 }
 
