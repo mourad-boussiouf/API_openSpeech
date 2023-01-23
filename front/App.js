@@ -24,7 +24,8 @@ import AppLightTheme from './styles/AppLightTheme';
 import AppDarkTheme from './styles/AppDarkTheme';
 import InscriptionScreen from './screen/InscriptionScreen';
 import ListMessages from './screen/ListMessages';
-import IntroStepByStep1 from './screen/IntroStepByStep1';
+import IntroStepByStep1 from './screen/introStepByStep1';
+import IntroStepByStep from './screen/IntroStepByStep';
 
 
 // import { LogBox } from 'react-native';
@@ -54,7 +55,7 @@ export default function App() {
                     <>
                         <StatusBar barStyle={"light-content"}/>
                         <Stack.Navigator screenOptions={{headerShown: false}}>
-                            <Stack.Screen name="IntroStepByStep1" component={IntroStepByStep1}/>
+                            <Stack.Screen name="IntroStepByStep" component={IntroStepByStep}/>
                             <Stack.Screen name="Home" component={HomeScreen} />
                             <Stack.Screen name="Inscription" component={InscriptionScreen}/>
                             <Stack.Screen name="ListMessages" component={ListMessages}/>
