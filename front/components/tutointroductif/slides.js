@@ -20,7 +20,7 @@ export default [
     {
         id: 4,
         title : "Prêt ?",
-        description : "Veuillez paramétrer votre langue. D'autres langues seront bientôt disponibles, Bon chat !",
+        description : "Vous allez être inviter à paramétrer votre langue afin de commencer. Bon chat !",
         image : [require('../../assets/introStepByStepRessources/pngIntro2RED.png'),require('../../assets/introStepByStepRessources/pngIntro2BLUE.png')]
     }
 ];

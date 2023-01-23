@@ -1,5 +1,5 @@
 import React, { useState, useRef } from 'react'
-import { SafeAreaView, Text, View, FlatList, useColorScheme } from 'react-native'
+import { SafeAreaView, Text, View, FlatList, StyleSheet, useColorScheme, Animated } from 'react-native'
 import { useTheme } from '@react-navigation/native';
 import { dimensions, margin, padding } from '../../styles/Base';
 import { API_USERS } from '../../services/config';
@@ -17,6 +17,16 @@ const IntroComponent = () => {
     let STORAGE_KEY = [];
     let neverBeenConnected = false;
 
+    const [currentIndex, setCurrentIndex] = useState(0);
+    const scrollX = useRef(new Animated.Value(0)).current;
+    const slidesRef = useRef(null);
+
+    const viewableItemsChanged = useRef(({ viewableItems }) => {
+        setCurrentIndex(viewableItems[0].index)
+    }).current;
+
+    const viewConfig = useRef({ viewAreaCoveragePercentThreshold: 50 }).current;
+    
     const navigation = useNavigation();
     const { colors } =  useTheme();
     const colorScheme = useColorScheme();
@@ -31,29 +41,31 @@ const IntroComponent = () => {
         return dimensions.fullHeight - dimensions.fullHeight * pourcent
     }
 
-    const styles = {
+    const styles = StyleSheet.create({
         container: {
-            flex: 1,
+            flex: 3,
             justifyContent:'center',
             alignItems: 'center',
             position: "absolute", 
-            top: calculHeight(0.608),
+            top: calculHeight(0.5623),
             alignSelf: "center",
             color: colors.border,
             height: calculHeight(0.70),
+            paddingTop: 20
+
         },
         illu : {
             flex: 1,
             justifyContent:'center',
             alignItems: 'center',
             position: "absolute", 
-            top: calculHeight(0.88),
+            top: calculHeight(0.889),
             alignSelf: "center",
             color: colors.border,
             height: calculHeight(0.70), 
             paddingLeft : 5,
         }
-    }
+    })
     
     return (
         <SafeAreaView>
@@ -62,10 +74,16 @@ const IntroComponent = () => {
                 data = {slides} 
                 renderItem = {({ item }) => <IntroItem item = {item}/>}
                 horizontal
-                showsHorizontalScrollIndicator
+                showsHorizontalScrollIndicator={false}
                 pagingEnabled
                 bounces={false}
                 keyExtractor={(item) => item.id}
+                onScroll={Animated.event([{ nativeEvent :       { contentOffset: { x:scrollX  } } } ], {
+                    useNativeDriver: false,
+                })}
+                scrollEventThrottle={32}
+                onViewableItemsChanged={viewableItemsChanged}
+                viewabilityConfig={viewConfig}
                 />
             </View>
             <View style = {styles.illu}>

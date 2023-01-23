@@ -30,6 +30,7 @@ const IntroItem = ( {item} ) => {
             flex: 1,
             justifyContent: "center",
             alignItems: "center",
+            paddingTop: 20
         },
         title: {
             marginTop: item.title.length > 26 ? 2.5 : 0,
@@ -47,10 +48,10 @@ const IntroItem = ( {item} ) => {
             color: colors.card,
             fontWeight:'300',
             fontSize: 16,
-           
-            textAlign:'center',
+            textAlign: "center",
             paddingHorizontal: 64,
             flexWrap: "wrap",
+            marginBottom: 85,
         },
         text: {
             justifyContent: "center",
