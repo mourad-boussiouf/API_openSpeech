@@ -51,7 +51,7 @@ const IntroItem = ( {item} ) => {
             textAlign: "center",
             paddingHorizontal: 64,
             flexWrap: "wrap",
-            marginBottom: 85,
+            marginBottom: 30,
         },
         text: {
             justifyContent: "center",

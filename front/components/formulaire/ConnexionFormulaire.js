@@ -124,8 +124,7 @@ const ConnexionFormulaire = () => {
 
                             setValide({isValide: true, message: data.message})    
                             data.user.last_co === null ?  neverBeenConnected = true : neverBeenConnected = false;
-
-                         
+   
                     });
                 
             })
@@ -149,7 +148,7 @@ const ConnexionFormulaire = () => {
 
                                                                     
                         setTimeout(() => {
-                            neverBeenConnected ? navigation.navigate("IntroStepByStep1") : navigation.navigate("ListMessages");
+                            neverBeenConnected ? navigation.navigate("IntroStepByStep") : navigation.navigate("ListMessages");
                         }, 1000);
                 });
             

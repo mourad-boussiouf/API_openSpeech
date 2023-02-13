@@ -2,7 +2,6 @@
 import React, { useState, useEffect } from 'react';
 import { StyleSheet, SafeAreaView, StatusBar, useColorScheme } from 'react-native';
 
-
 /* Import React navigation  */
 import {NavigationContainer} from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
@@ -24,8 +23,8 @@ import AppLightTheme from './styles/AppLightTheme';
 import AppDarkTheme from './styles/AppDarkTheme';
 import InscriptionScreen from './screen/InscriptionScreen';
 import ListMessages from './screen/ListMessages';
-import IntroStepByStep1 from './screen/introStepByStep1';
 import IntroStepByStep from './screen/IntroStepByStep';
+import LanguageSelect from './screen/LanguageSelect';
 
 
 // import { LogBox } from 'react-native';
@@ -38,7 +37,6 @@ export default function App() {
 
     const [splashScreen, setSplashScreen] = useState(false)
 
-
     console.log(colorScheme)
     useEffect(() => {
         setTimeout(() => {
@@ -47,29 +45,24 @@ export default function App() {
     }, [])
 
     return (
-
         <NavigationContainer theme={colorScheme === 'light' ? AppLightTheme : AppDarkTheme}>
-
             {
                 splashScreen === true ?
                     <>
                         <StatusBar barStyle={"light-content"}/>
                         <Stack.Navigator screenOptions={{headerShown: false}}>
                             <Stack.Screen name="IntroStepByStep" component={IntroStepByStep}/>
+                            <Stack.Screen name="LanguageSelect" component={IntroStepByStep}/>
                             <Stack.Screen name="Home" component={HomeScreen} />
                             <Stack.Screen name="Inscription" component={InscriptionScreen}/>
                             <Stack.Screen name="ListMessages" component={ListMessages}/>
                         </Stack.Navigator>
                     </>
-                    
                 :
                 <SafeAreaView style={styles.container}>
                     <ImageViewer PlaceholderImageSource={PlaceholderImage} style={styles.image}/>
                 </SafeAreaView>   
             }
-            
-            
-
         </NavigationContainer>
     );
 }

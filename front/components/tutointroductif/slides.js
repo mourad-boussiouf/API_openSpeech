@@ -8,7 +8,7 @@ export default [
     {
         id: 2,
         title : "Les frontières n'ont plus de limites ",
-        description : "Plus la peine de manuellement traduire des messages. \nNotre application s'en charge pour vous.",
+        description : "Plus la peine de manuellement traduire des messages. \n Notre application s'en charge pour vous.",
         image: [require('../../assets/introStepByStepRessources/pngIntro2RED.png'),require('../../assets/introStepByStepRessources/pngIntro2BLUE.png')]
     },
     {
