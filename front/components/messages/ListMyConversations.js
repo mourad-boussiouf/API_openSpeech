@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { API_CONV } from '../../services/config'
 import { useRoute } from '@react-navigation/native'
 
-import ItemList from './liste/ItemList'
+import ItemList from './liste/ItemListConversation'
 import { dimensions } from '../../styles/Base'
 
 
@@ -11,7 +11,6 @@ import { dimensions } from '../../styles/Base'
 const ListMyMessages = () => {
 
     const [data, setData] = useState([])
-
 
     const UrlApiUsers = API_CONV + '/mine'
 
@@ -41,12 +40,11 @@ const ListMyMessages = () => {
         return dimensions.fullHeight - dimensions.fullHeight * pourcent
     }  
 
-    console.log(data)
     return (
 
         <SafeAreaView>
 
-            <View style={{top: calculHeight(0.88)}}>
+            <View style={{top: calculHeight(0.89)}}>
                 <FlatList 
                     data={data}
                     renderItem={(
@@ -58,6 +56,8 @@ const ListMyMessages = () => {
                                 created_at={item.last_send_date}
                                 avatar={item.urlAvatar}
                                 idChat={item.conversation_id}
+                                mine={item.mine}
+                                idOther={item.id}
                             />
                     }
                     keyExtractor={item => item.id}

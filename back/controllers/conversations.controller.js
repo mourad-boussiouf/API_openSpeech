@@ -96,7 +96,7 @@ const conversationsController = {
                         .status(400)
                         .json({message: "Erreur durant le traitement"})
                         .end()
-                
+                 
                 if (ExecUpdateConvLastMessage.warningStatus !== 0)
                     return res
                         .status(400)
@@ -212,6 +212,23 @@ const conversationsController = {
                 .end()
         } catch (error) {
             console.log("GetConversation" + error)
+        }
+    },
+
+    getIndividualConversation: async (req, res, next) => {
+        try {
+            const idConv = req.params.id
+
+            const getIndivConv = "SELECT * FROM conversations as c INNER JOIN messages as m ON c.id = m.conversation_id WHERE conversation_id = ? ORDER BY created_at DESC"
+
+            const [ExecGetIndivConv] = await pool.query(getIndivConv, idConv)
+
+            return res
+                .status(200)
+                .json({data: ExecGetIndivConv})
+                .end()
+        } catch (error) {
+            console.log("conv indiv :" + error)
         }
     }
 }

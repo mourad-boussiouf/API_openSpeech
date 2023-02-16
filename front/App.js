@@ -17,9 +17,10 @@ import HomeScreen from './screen/Auth/HomeScreen';
 import AppLightTheme from './styles/AppLightTheme';
 import AppDarkTheme from './styles/AppDarkTheme';
 import InscriptionScreen from './screen/Auth/InscriptionScreen';
-import ListMessages from './screen/Conversations/ListMessages';
-import Conversation from './screen/Conversations/Conversation';
+import ListConversation from './screen/Conversations/ListConversation';
+import ConversationIndiv from './screen/Conversations/ConversationIndiv';
 
+import { UserContext } from './context/userContext';
 
 // import { LogBox } from 'react-native';
 // LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
@@ -31,6 +32,8 @@ export default function App() {
 
     const [splashScreen, setSplashScreen] = useState(false)
 
+    const [context, setContext] = useState("default context value");
+
 
     console.log(colorScheme)
     useEffect(() => {
@@ -40,36 +43,37 @@ export default function App() {
     }, [])
 
     return (
+        <UserContext.Provider value={[context, setContext]}>
+            <NavigationContainer theme={colorScheme === 'light' ? AppLightTheme : AppDarkTheme}>
 
-        <NavigationContainer theme={colorScheme === 'light' ? AppLightTheme : AppDarkTheme}>
-
-            {
-                splashScreen === true ?
-                    <>
-                        <StatusBar barStyle={"light-content"}/>
-                        <Stack.Navigator screenOptions={{headerShown: false}}>
-                            <Stack.Group>
-                                <Stack.Screen name="Home" component={HomeScreen} />
-                                <Stack.Screen name="Inscription" component={InscriptionScreen}/>   
-                            </Stack.Group>
-                            <Stack.Group>
-                                <Stack.Screen name="ListMessages" component={ListMessages}/>
-                                <Stack.Screen name="conversation" component={Conversation}/>
-                            </Stack.Group>
-                                
-                        </Stack.Navigator>
+                {
+                    splashScreen === true ?
+                        <>
+                            <StatusBar barStyle={"light-content"}/>
+                            <Stack.Navigator screenOptions={{headerShown: false}}>
+                                <Stack.Group>
+                                    <Stack.Screen name="Home" component={HomeScreen} />
+                                    <Stack.Screen name="Inscription" component={InscriptionScreen}/>   
+                                </Stack.Group>
+                                <Stack.Group>
+                                    <Stack.Screen name="ListMessages" component={ListConversation}/>
+                                    <Stack.Screen name="conversation" component={ConversationIndiv}/>
+                                </Stack.Group>
+                                    
+                            </Stack.Navigator>
+                            
+                        </>
                         
-                    </>
-                    
-                :
-                    <SafeAreaView style={styles.container}>
-                        <ImageViewer PlaceholderImageSource={PlaceholderImage} style={styles.image}/>
-                    </SafeAreaView>   
-            }
-            
-            
+                    :
+                        <SafeAreaView style={styles.container}>
+                            <ImageViewer PlaceholderImageSource={PlaceholderImage} style={styles.image}/>
+                        </SafeAreaView>   
+                }
+                
+                
 
-        </NavigationContainer>
+            </NavigationContainer>
+        </UserContext.Provider>
     );
 }
 

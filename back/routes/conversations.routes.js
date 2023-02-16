@@ -10,6 +10,8 @@ const messageController = require("../controllers/messages.controller")
 router.post('/manage', conversationsController.manageConversations)
 router.get('/mine', conversationsController.getMyConversations)
 
+router.get('/:id', conversationsController.getIndividualConversation)
+
 
 
 

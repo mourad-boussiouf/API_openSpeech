@@ -12,7 +12,9 @@ const AppLightTheme = {
     background: '#ffffff',
     secondary: "#FFA69E",
     error: "#B00020",
-    success: "#00C851"
+    success: "#00C851",
+    input: "#3F3F3F",
+    message: "#F1F1F1"
   }
 }
 

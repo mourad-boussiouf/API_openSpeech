@@ -3,10 +3,9 @@ import React, { useEffect, useState } from 'react'
 import { useNavigation, useTheme } from '@react-navigation/native'
 import { margin, padding } from '../../../styles/Base'
 
-import ImageViewer from '../../base/ImageViewer'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
-const ItemList = ({message, pseudo, notifications, created_at, avatar, idChat}) => {
+const ItemList = ({message, pseudo, notifications, created_at, avatar, idChat, mine, idOther}) => {
 
     const navigation = useNavigation();
 
@@ -25,8 +24,6 @@ const ItemList = ({message, pseudo, notifications, created_at, avatar, idChat}) 
         && messageDate.getMonth() === now.getMonth()
         && messageDate.getFullYear() === now.getFullYear())
 
-        console.log(isSameDay)
-
         const dayBetween = diff.getUTCDate() - 1
 
         if ( dayBetween === 0){
@@ -36,11 +33,7 @@ const ItemList = ({message, pseudo, notifications, created_at, avatar, idChat}) 
             else {
                 return "hier"
             }
-        } else if (dayBetween === 1){
-
-            return "hier"
-
-        } else if (dayBetween > 1){
+        } else if (dayBetween >= 1){
 
             var day = messageDate.getDate()
             var month =("0" + ( messageDate.getMonth() + 1)).slice(-2)
@@ -53,7 +46,7 @@ const ItemList = ({message, pseudo, notifications, created_at, avatar, idChat}) 
     }
 
     const onPress = () => {
-        navigation.navigate('conversation', {id: idChat})
+        navigation.navigate('conversation', {id: idChat, username: pseudo, idOther: idOther})
     }
 
     const styles = {
@@ -105,8 +98,8 @@ const ItemList = ({message, pseudo, notifications, created_at, avatar, idChat}) 
             alignItems: "center",
             alignSelf: "flex-end",
             backgroundColor: colors.secondary,
-            width: 20,
-            height: 20,
+            width: 17,
+            height: 17,
             textAlign: "right",
             borderRadius: 30/2,
         }, 
@@ -121,6 +114,8 @@ const ItemList = ({message, pseudo, notifications, created_at, avatar, idChat}) 
         },
         
     }
+
+    console.log(mine)
     return (
         <TouchableOpacity style={styles.item} onPress={onPress}>
             <View style={styles.container}>
@@ -136,7 +131,8 @@ const ItemList = ({message, pseudo, notifications, created_at, avatar, idChat}) 
             
             <View>
                 {
-                    notifications !== 0 ?
+                    
+                    notifications !== 0 && mine !== 1 ?
 
                         <View style={styles.subItemDateNotif}>
                             <Text style={{color: colors.background, fontSize: 10, fontWeight: "bold"}}>

@@ -23,7 +23,7 @@ const BottomNav = ({location}) => {
             position: 'absolute',
             justifyContent: "space-between",
             left: 0, 
-            top: calculHeight(0.107),
+            top: calculHeight(0.11),
             width: "100%",
             flexDirection: "row",
             paddingHorizontal: padding.l,

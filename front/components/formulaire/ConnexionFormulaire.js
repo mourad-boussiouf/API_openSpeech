@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { SafeAreaView, Text, TextInput, TouchableOpacity, View } from 'react-native'
 import { useTheme } from '@react-navigation/native';
 import TitreViewer from '../base/TitreViewer';
@@ -14,6 +14,7 @@ import { API_USERS } from '../../services/config';
 import ValideWarning from '../warning/ValideWarning';
 
 import { useNavigation } from '@react-navigation/native';
+import { UserContext } from '../../context/userContext';
 
 const ConnexionFormulaire = () => {
 
@@ -28,6 +29,8 @@ const ConnexionFormulaire = () => {
     const [valide, setValide] = useState({isValide: false, message: ""})
 
     const [isError, setIsError] = useState(false)
+
+    const [context, setContext] = useContext(UserContext);
 
     const calculWidth = (pourcent) => {
         return dimensions.fullWidth - dimensions.fullWidth * pourcent
@@ -131,6 +134,8 @@ const ConnexionFormulaire = () => {
                 
                                         setValide({isValide: true, message: ret.message})                         
                                         setIsError(false)
+
+                                        setContext({id: currentId})
                                         
                                         setTimeout(() => {
                                             navigation.navigate('ListMessages',
