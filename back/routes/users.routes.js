@@ -41,7 +41,8 @@ router.get("/details/:id", isAuth, userController.getDetails)
 router.get("/profil/:id", isAuth, userController.getProfil)
 
 router.put("/profil/update",isAuth, userController.updateMyProfile);
-router.patch('/lastCoUser', isAuth, userController.updateLastCo)
+router.patch('/lastCoUser', isAuth, userController.updateLastCo);
+router.patch('/languageUser', isAuth, userController.updateLastCo);
 
 
 module.exports = router

@@ -9,5 +9,4 @@ const ListMessages = () => {
     </View>
   )
 }
-
-export default ListMessages
+export default ListMessages;

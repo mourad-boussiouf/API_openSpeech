@@ -10,8 +10,5 @@ export default function IntroStepByStep(){
             <BackgroundDisplay/> 
             <IntroComponent/>
         </View>
-    )
-}
-
-
-
+    );
+};

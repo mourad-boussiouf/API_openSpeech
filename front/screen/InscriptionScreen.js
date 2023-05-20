@@ -11,5 +11,4 @@ const InscriptionScreen = () => {
     </View>
   )
 }
-
 export default InscriptionScreen

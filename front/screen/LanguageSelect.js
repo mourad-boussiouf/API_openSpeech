@@ -4,7 +4,6 @@ import { useNavigation } from '@react-navigation/native';
 import BackgroundDisplay from "../components/base/BackgroundDisplay";
 import LangueFormulaire from '../components/formulaire/LangueFormulaire';
 
-
 const LanguageSelect = () => {
     return (
       <View>
@@ -13,5 +12,4 @@ const LanguageSelect = () => {
       </View>
     );
 };
-
 export default LanguageSelect;

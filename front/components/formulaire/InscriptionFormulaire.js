@@ -16,8 +16,6 @@ import * as ImagePicker from 'expo-image-picker';
 import { API_USERS } from '../../services/config';
 import ValideWarning from '../warning/ValideWarning';
 
-
-
 const InscriptionFormulaire = () => {
 
     const navigation = useNavigation();
@@ -232,6 +230,7 @@ const InscriptionFormulaire = () => {
     }
 
     const changePic = async () => {
+        
         let result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.All,
             allowsEditing: true,
@@ -243,7 +242,7 @@ const InscriptionFormulaire = () => {
                 return setImage(result.assets[0].uri), setError({isError: false});
                 
             return setError({isError: true, message: "Aucun fichier sélectionné"})
-        
+
     }
     
     return (

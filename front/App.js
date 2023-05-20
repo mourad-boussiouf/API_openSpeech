@@ -26,7 +26,6 @@ import ListMessages from './screen/ListMessages';
 import IntroStepByStep from './screen/IntroStepByStep';
 import LanguageSelect from './screen/LanguageSelect';
 
-
 // import { LogBox } from 'react-native';
 // LogBox.ignoreLogs(['Warning: ...']); // Ignore log notification by message
 // LogBox.ignoreAllLogs();
@@ -51,9 +50,9 @@ export default function App() {
                     <>
                         <StatusBar barStyle={"light-content"}/>
                         <Stack.Navigator screenOptions={{headerShown: false}}>
-                            <Stack.Screen name="IntroStepByStep" component={IntroStepByStep}/>
-                            <Stack.Screen name="LanguageSelect" component={IntroStepByStep}/>
                             <Stack.Screen name="Home" component={HomeScreen} />
+                            <Stack.Screen name="LanguageSelect" component={LanguageSelect}/>
+                            <Stack.Screen name="IntroStepByStep" component={IntroStepByStep}/>
                             <Stack.Screen name="Inscription" component={InscriptionScreen}/>
                             <Stack.Screen name="ListMessages" component={ListMessages}/>
                         </Stack.Navigator>

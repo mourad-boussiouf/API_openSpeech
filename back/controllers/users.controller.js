@@ -318,6 +318,22 @@ const usersController = {
         }
     },
 
+    updateLanguage: async (req, res, next) => {
+        console.log("COOKIES",req.language)
+          try {
+              const sql = `UPDATE users SET language = ${req.language} WHERE id = ${req.cookies.id}` 
+
+              const updateSql = await pool.query(sql)
+  
+              return res
+                  .status(200)
+                  .json({message: "Utilisateur mis à jour"})
+                  .end()
+          } catch (error) {
+              console.log(error)
+          }
+      },
+
     updateMyProfile: async (req, res, next) => {
         console.log("CA MARCHEe PAS",array);
         try {

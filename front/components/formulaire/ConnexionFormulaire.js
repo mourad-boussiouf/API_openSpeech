@@ -209,8 +209,6 @@ const ConnexionFormulaire = () => {
                     <Checkbox  color={colors.border} style={styles.checkbox} value={isChecked} onValueChange={setChecked} />
                     <Text style={styles.label}>Se souvenir de moi ?</Text> 
                 </View>
-                
-                
 
             </View>
 

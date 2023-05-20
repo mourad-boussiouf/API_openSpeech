@@ -41,5 +41,4 @@ const ButtonSubmit = ({titre , onPress}) => {
         </TouchableOpacity>
     )
 }
-
 export default ButtonSubmit
